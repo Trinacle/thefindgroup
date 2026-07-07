@@ -1,0 +1,29 @@
+---
+# cPanel Git Version Control deployment manifest.
+# When you click "Deploy HEAD Commit" (or when a GitHub webhook fires),
+# cPanel runs these tasks to publish the repository into the live theme folder.
+#
+# Read cPanel's reference: https://docs.cpanel.net/knowledge-base/web-services/git-deployment/
+#
+# $DEPLOYPATH is the deployment target — the live theme directory:
+#   /home/USER/public_html/website_21fa4134/staging/7837/wp-content/themes/thefindgroup
+#
+# We use rsync to mirror the repo into DEPLOYPATH, excluding files that must
+# never ship to a live WordPress install.
+
+deployment:
+  tasks:
+    # Mirror the repo into the live theme directory.
+    # --delete removes files on the live side that no longer exist in the repo.
+    # Exclude dev-only files from the live copy.
+    - >
+      rsync -a --delete
+      --exclude='.git/'
+      --exclude='.github/'
+      --exclude='.cpanel.yml'
+      --exclude='.gitignore'
+      --exclude='.gitattributes'
+      --exclude='node_modules/'
+      --exclude='README.md'
+      --exclude='DEPLOYMENT.md'
+      ./ $DEPLOYPATH/

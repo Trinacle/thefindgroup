@@ -1,0 +1,32 @@
+# THE FINDGROUP theme — hardening for the theme folder itself.
+# Sits inside wp-content/themes/thefindgroup/ and blocks direct web access to
+# sensitive files that cPanel Git Version Control checks out alongside the theme.
+#
+# Without this, anyone can browse:
+#   /wp-content/themes/thefindgroup/.git/config
+#   /wp-content/themes/thefindgroup/.cpanel.yml
+#   /wp-content/themes/thefindgroup/.gitignore
+# …which leaks repository structure, deployment paths, and metadata.
+
+# --- Block dotfiles (Git, cPanel config, IDE files) ---
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# --- Block direct access to these config files ---
+<FilesMatch "\.(md|log|sql|sh|bak|swp|tmp)$">
+    Require all denied
+</FilesMatch>
+
+# --- Block sensitive PHP config files that shouldn't be executed standalone ---
+<FilesMatch "^(composer\.(json|lock)|package\.json|package-lock\.json|webpack\.config\.js)$">
+    Require all denied
+</FilesMatch>
+
+# --- Disable directory listing ---
+Options -Indexes
+
+# --- Block the .git directory explicitly (belt and suspenders) ---
+RedirectMatch 401 (?i)/\.git 403
+RedirectMatch 403 (?i)/\.git
+RedirectMatch 403 (?i)/\.github

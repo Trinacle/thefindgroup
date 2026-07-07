@@ -1,82 +1,91 @@
-# Deployment — Automatic GitHub → cPanel
+# Deployment — cPanel Git Version Control (auto-deploy on push)
 
-THE FINDGROUP theme updates automatically. Commit to the `main` branch on
-GitHub, and within ~60 seconds the live WordPress site reflects the change.
+THE FINDGROUP theme updates automatically: **commit to GitHub `main` → cPanel
+pulls and deploys within seconds**. This uses cPanel's built-in Git Version
+Control feature (no FTP, no GitHub Actions required).
 
-**Method chosen:** GitHub Action that mirrors the repo to the cPanel-hosted
-WordPress theme folder via FTP/FTPS.
+> **Current setup (as configured):**
+> - **Live URL:** https://thefindgroup.com/staging/7837
+> - **Repo on cPanel:** `public_html/website_21fa4134/staging/7837/wp-content/themes/thefindgroup`
+> - **GitHub remote:** `Trinacle/thefindgroup`
+> - **Deployment config:** `.cpanel.yml` (this repo)
 
 ---
 
 ## How it works
 
 ```
-  You (or ZCode) commits to `main`
+  You commit & push to GitHub `main`
               │
               ▼
-   GitHub Action runs (.github/workflows/deploy.yml)
+   GitHub fires a webhook → cPanel
               │
               ▼
-   FTP-Deploy-Action syncs only the changed files
+   cPanel runs `git pull origin main`
               │
               ▼
-   /public_html/wp-content/themes/thefindgroup-luxury/  ← on cPanel
+   cPanel executes `.cpanel.yml` deployment tasks
+   (rsync the repo into the live theme folder, excluding dev files)
               │
               ▼
-   Live site at https://thefindgroup.com reflects the update
+   Live site at /staging/7837 reflects the update
 ```
 
-- **Branch:** `main` triggers deployment. Use other branches for work-in-progress.
-- **Theme folder on server:** `wp-content/themes/thefindgroup-luxury/` (defined in `deploy.yml` → `env.THEME_DIR`).
-- **Deletions are synced** — if you remove a file from the repo, it's removed from the server too.
-- **Excluded from upload:** `.git`, `.github`, `README.md`, this doc, `node_modules`, OS junk (see `.ftpdeploy`).
+The `.cpanel.yml` file (in this repo root) tells cPanel exactly how to publish
+each commit. It mirrors the repo into the live theme directory using `rsync`,
+excluding `.git`, `.github`, `.cpanel.yml`, `node_modules`, README/DEPLOYMENT
+docs, etc.
 
 ---
 
-## One-time setup (≈5 minutes)
+## Initial setup (one-time)
 
-### Step 1 — Get cPanel FTP credentials
+These steps should already be done (the cPanel repository is connected):
 
-In cPanel (`https://thefindgroup.com:2083`):
+### 1. Repository connected in cPanel
+**cPanel → Git™ Version Control** shows the `thefindgroup` repo cloned to
+`public_html/website_21fa4134/staging/7837/wp-content/themes/thefindgroup`
+and status "up-to-date".
 
-1. **Files → FTP Accounts → Create FTP Account** (or use the default cPanel login).
-2. Note these three values:
+### 2. `.cpanel.yml` exists in the repo root
+✅ Now committed. This is what cPanel was asking for ("A valid .cpanel.yml
+file exists"). Without it, cPanel refuses to deploy.
 
-| Value | Where to find it | Example |
-|---|---|---|
-| **FTP server / host** | cPanel → FTP Accounts → "FTP Server" | `ftp.thefindgroup.com` or the server IP |
-| **FTP username** | The account you created | `thefindgroup` or `user@thefindgroup.com` |
-| **FTP password** | The password you set | (keep secret) |
+### 3. No uncommitted changes
+cPanel requires a clean working tree before deploying. The `.cpanel.yml`
+itself was the missing piece — once pushed, cPanel sees a clean tree.
 
-3. Confirm the FTP account's **home directory** is `public_html` (or higher), so it can reach `wp-content/themes/`.
+### 4. Activate the theme in WordPress
+- Log into wp-admin at the staging site.
+- **Appearance → Themes → activate "THE FINDGROUP — Luxury"**.
+- **Settings → Reading → "A static page"** → Front page = your Home page.
+- Create the 8 inner pages (About, Contact, Sell With Us, Aircraft, Armored
+  Vehicles, Real Estate, Privacy, Terms) and assign each its matching
+  template under **Page Attributes**.
 
-> **Tip:** Test the credentials first in FileZilla. If port 21 + TLS fails, try plain FTP — and switch `security: strict` to `security: loose` in `.github/workflows/deploy.yml`.
+---
 
-### Step 2 — Add the credentials to GitHub as Secrets
+## Enabling auto-deploy on every GitHub push (the webhook)
 
-On GitHub, repo **Trinacle/thefindgroup**:
+By default, cPanel deploys **manually** (you click "Deploy HEAD Commit" in
+cPanel). To make it fully automatic on every push, add a webhook:
 
-1. **Settings → Secrets and variables → Actions → New repository secret**
-2. Add these three secrets (exact names — the workflow looks for them):
+### In GitHub:
+1. Go to **https://github.com/Trinacle/thefindgroup/settings/hooks**
+2. **Add webhook →** configure:
+   - **Payload URL:** cPanel's webhook receiver URL (see below)
+   - **Content type:** `application/json`
+   - **Trigger:** just the `push` event
+3. The **Payload URL** comes from cPanel:
+   - **cPanel → Git™ Version Control → manage `thefindgroup`**
+   - Look for the **"Webhook URL"** or **"Pull Deployment"** section
+   - Copy that URL into the GitHub webhook Payload URL field
 
-| Secret name | Value |
-|---|---|
-| `FTP_SERVER` | (your FTP host) |
-| `FTP_USERNAME` | (your FTP username) |
-| `FTP_PASSWORD` | (your FTP password) |
-
-Secrets are encrypted by GitHub and never printed in logs.
-
-### Step 3 — First deployment
-
-1. Make any commit and push to `main` (or trigger the workflow manually from the **Actions** tab → "Deploy to cPanel" → "Run workflow").
-2. Watch the run under the **Actions** tab. Green ✓ = deployed.
-3. In WordPress: **Appearance → Themes → activate "THE FINDGROUP — Luxury"**.
-4. **Appearance → Customize → THE FINDGROUP** → set phone, social, live-chat snippet.
-5. Create the 8 inner pages (About, Contact, Sell With Us, Aircraft, Armored Vehicles, Real Estate, Privacy, Terms) and assign each its matching template under **Page Attributes**.
-6. **Settings → Reading → "A static page"** → Front page = Home.
-
-That's it — every future push to `main` deploys automatically.
+Once the webhook is set, every push to `main` will:
+1. Trigger GitHub to POST to cPanel
+2. cPanel pulls the latest commit
+3. cPanel runs the `.cpanel.yml` deployment tasks
+4. The staging site updates automatically — typically within 10–30 seconds
 
 ---
 
@@ -87,57 +96,71 @@ That's it — every future push to `main` deploys automatically.
 git add -A
 git commit -m "tweak: refine hero spacing"
 git push origin main
-# → Action runs → live site updates in ~60s
+# → cPanel auto-deploys within ~30 seconds
 ```
 
 Or commit directly on GitHub.com via the web editor for small text/PHP tweaks.
+
+To check if a deploy ran, go to **cPanel → Git™ Version Control → manage**
+and look at the **deployment history / last deployment time**.
+
+---
+
+## Files that ship to the live server vs. stay in the repo
+
+`.cpanel.yml` uses `rsync --delete` with excludes. **Live site gets** all PHP,
+CSS, JS, image, font assets. **Excluded from live** (kept in repo only):
+
+| File | Why excluded |
+|---|---|
+| `.git/`, `.github/` | Dev metadata — no place in production |
+| `.cpanel.yml` | Deploy config — would be visible publicly otherwise |
+| `.gitignore`, `.gitattributes` | Dev tooling |
+| `node_modules/` | Build artifacts (we ship pre-built CSS/JS) |
+| `README.md`, `DEPLOYMENT.md` | Internal docs |
+
+The `.htaccess` at the repo root also ships to the live theme folder and
+enforces these blocks at the web-server level (defense in depth).
+
+---
+
+## Security hardening
+
+The repo's `.htaccess` blocks direct web access to:
+- All dotfiles (`.git/`, `.cpanel.yml`, `.gitignore`, etc.)
+- Config files (`composer.json`, `package.json`, `*.log`, `*.sql`, `*.sh`)
+- Directory listings (`Options -Indexes`)
+
+So even if cPanel checks out `.git/` into the web root, it's not browseable.
+Verified: `https://thefindgroup.com/staging/7837/wp-content/themes/thefindgroup/.git/config` returns 403.
 
 ---
 
 ## Troubleshooting
 
-### Action fails with "530 Login authentication failed"
-- Verify `FTP_USERNAME` and `FTP_PASSWORD` secrets match exactly (no trailing spaces).
-- Some cPanel hosts require the full `user@domain.com` format for the username.
+### "The system cannot deploy… A valid .cpanel.yml file exists"
+- This was the original error. Fixed by committing `.cpanel.yml`. After
+  pushing, refresh cPanel → Git Version Control → the error clears.
 
-### Action runs but site doesn't change
-- Confirm WordPress isn't using a ** caching plugin** or **Cloudflare** that needs a purge.
-- Confirm the theme is **activated** (Appearance → Themes) — uploads to an inactive theme folder have no visible effect.
-- Check that `server-dir` in `deploy.yml` matches your actual server path. Run `pwd` via cPanel File Manager inside `wp-content/themes/` to confirm.
+### "No uncommitted changes exist on the checked-out branch"
+- cPanel requires a clean working tree. If cPanel shows local modifications,
+  in cPanel → Git Version Control → **"Reset"** the working tree, or run
+  `git checkout -- .` in the cPanel terminal to discard local changes.
 
-### "425 Cannot open data connection" or hangs
-- cPanel FTP may require **passive mode** or a specific port range. The action uses passive by default; if it fails, set `security: loose` and retry.
-- Confirm port 21 is open on the firewall (or use port 22/SFTP if your host supports it — see alternative below).
+### Deploy runs but site doesn't update
+- Confirm the theme is **activated** in wp-admin (Appearance → Themes).
+- Flush any cache plugin (LiteSpeed, WP Rocket, W3TC) and Cloudflare.
+- Verify `.cpanel.yml`'s `$DEPLOYPATH` matches your live theme path. cPanel
+  sets `$DEPLOYPATH` automatically to the repo's checkout location, which
+  for this setup is `…/wp-content/themes/thefindgroup`.
+- Check cPanel → Git Version Control → **deployment log** for rsync errors.
 
-### Files upload but with wrong line endings
-- The repo uses `.gitattributes` to normalize. Already handled.
+### "Could not connect to GitHub" on pull
+- The cPanel-stored GitHub credentials/SSH key may have expired. In cPanel
+  → Git Version Control → manage → **"Update Credentials"** or re-auth.
 
----
-
-## Alternative: cPanel Git Version Control (no GitHub Actions)
-
-If you'd rather not use FTP at all, cPanel has a built-in **Git Version Control**
-feature that pulls directly from GitHub. Setup:
-
-1. cPanel → **Git™ Version Control → Create** → "Clone a repository".
-2. Repository URL: `https://github.com/Trinacle/thefindgroup.git`
-3. cPanel will create a working copy at `~/thefindgroup-repo` (NOT inside `public_html`).
-4. After cloning, cPanel shows a **"Deploy HEAD commit"** button. But cPanel's deploy copies the whole repo flat — for a theme you'll want a **deployment script**:
-
-   Create `.cpanel.yml` in the repo root:
-   ```yaml
-   ---
-   deployment:
-     tasks:
-       - export DEPLOYPATH=/home/USER/public_html/wp-content/themes/thefindgroup-luxury
-       - /bin/cp -R * $DEPLOYPATH/
-       - /bin/cp -R .ftpdeploy $DEPLOYPATH/ 2>/dev/null || true
-   ```
-   (Replace `USER` with your cPanel username.)
-
-5. Then either **manually click "Deploy"** in cPanel, or set up a **GitHub webhook** to cPanel's pull URL for automatic sync.
-
-**Recommendation:** The FTP GitHub Action (the default in this repo) is simpler and triggers on every push automatically. Use cPanel Git Version Control only if FTP is blocked on the host.
+### Files deploy with Windows line endings (CRLF)
+- `.gitattributes` forces `eol=lf` for PHP/JS/CSS, so this is handled.
 
 ---
 
@@ -149,27 +172,28 @@ Git makes this trivial:
 # Find the last known-good commit
 git log --oneline
 
-# Revert the bad commit (creates a new commit that undoes it)
+# Revert (creates a new commit that undoes the bad one) — safe, no force-push
 git revert <bad-commit-sha>
 git push origin main
-# → Action deploys the reverted state automatically
+# → cPanel auto-deploys the reverted state
 ```
 
-For a faster nuclear option, force-push a known-good commit:
-
+For a hard rollback:
 ```bash
 git reset --hard <good-commit-sha>
 git push --force origin main
 ```
-
-The Action re-deploys whatever `main` points to.
+cPanel will pull and deploy whatever `main` points to.
 
 ---
 
-## Secrets reference
+## Moving from staging to production
 
-| Secret | Purpose | Required |
-|---|---|---|
-| `FTP_SERVER` | cPanel FTP host | ✅ |
-| `FTP_USERNAME` | FTP account username | ✅ |
-| `FTP_PASSWORD` | FTP account password | ✅ |
+When ready to launch to the main `thefindgroup.com` domain:
+1. Clone/connect the same repo to the production theme path
+   (`public_html/wp-content/themes/thefindgroup`).
+2. Add a second `.cpanel.yml` if the production path differs (it usually
+   won't — cPanel uses `$DEPLOYPATH` which auto-resolves).
+3. Set up the same GitHub webhook for the production cPanel repo entry.
+4. Both staging and production can track the same `main` branch, or use
+   separate branches (`staging` → staging site, `main` → production).
