@@ -1,0 +1,254 @@
+/* =========================================================================
+   TFG — Forminator Overrides
+   Restyle Forminator's default chrome to match our luxury design:
+   hairline underline fields, floating uppercase labels, custom selects.
+   Loaded after Forminator's own CSS so we win specificity.
+   ========================================================================= */
+
+.forminator-ui.forminator-custom-form {
+	border: 0 !important;
+	background: transparent !important;
+	padding: 0 !important;
+	max-width: 720px;
+	font-family: var(--font-body) !important;
+	color: var(--ink) !important;
+}
+
+/* Field rows */
+.forminator-ui .forminator-row { margin-bottom: 1.75rem !important; }
+
+/* Inputs / textareas */
+.forminator-ui .forminator-field {
+	background: transparent !important;
+	border: 0 !important;
+	padding: 0 !important;
+}
+
+.forminator-ui .forminator-field input[type="text"],
+.forminator-ui .forminator-field input[type="email"],
+.forminator-ui .forminator-field input[type="tel"],
+.forminator-ui .forminator-field input[type="number"],
+.forminator-ui .forminator-field textarea,
+.forminator-ui .forminator-field select {
+	width: 100% !important;
+	background: transparent !important;
+	background-color: transparent !important;
+	border: 0 !important;
+	border-bottom: 1px solid var(--silver) !important;
+	border-radius: 0 !important;
+	color: var(--ink) !important;
+	font-family: var(--font-body) !important;
+	font-size: 1.05rem !important;
+	padding: 0.75rem 0 !important;
+	box-shadow: none !important;
+	outline: none !important;
+	transition: border-color var(--dur) var(--ease) !important;
+	-webkit-appearance: none !important;
+	appearance: none !important;
+	height: auto !important;
+	min-height: 0 !important;
+}
+
+.forminator-ui .forminator-field input:focus,
+.forminator-ui .forminator-field textarea:focus,
+.forminator-ui .forminator-field select:focus {
+	border-bottom-color: var(--silver-bright) !important;
+}
+
+.forminator-ui .forminator-field textarea {
+	resize: vertical;
+	min-height: 100px !important;
+}
+
+/* Placeholders */
+.forminator-ui .forminator-field input::placeholder,
+.forminator-ui .forminator-field textarea::placeholder {
+	color: var(--ink-mute) !important;
+	opacity: 1 !important;
+}
+
+/* Labels */
+.forminator-ui .forminator-field .forminator-label,
+.forminator-ui .forminator-field .forminator-field--label {
+	font-family: var(--font-body) !important;
+	font-size: var(--fs-eyebrow) !important;
+	font-weight: 600 !important;
+	letter-spacing: var(--tk-eyebrow) !important;
+	text-transform: uppercase !important;
+	color: var(--silver-bright) !important;
+	margin-bottom: 0.6rem !important;
+	display: block !important;
+	padding: 0 !important;
+}
+
+.forminator-ui .forminator-field .forminator-label .forminator-required,
+.forminator-ui .forminator-required {
+	color: var(--ink-mute) !important;
+}
+
+/* Selects — custom chevron */
+.forminator-ui .forminator-field--select {
+	position: relative;
+}
+.forminator-ui .forminator-field--select .forminator-select {
+	border: 0 !important;
+	background: transparent !important;
+}
+.forminator-ui .forminator-field--select::after {
+	content: "" !important;
+	position: absolute;
+	right: 0; top: 50%;
+	width: 8px; height: 8px;
+	border-right: 1px solid var(--silver);
+	border-bottom: 1px solid var(--silver);
+	transform: translateY(-75%) rotate(45deg);
+	pointer-events: none;
+	z-index: 2;
+}
+
+/* select2 dropdowns */
+.forminator-ui .select2-container--default .select2-selection--single,
+.forminator-ui .select2-container--default .select2-selection--multiple {
+	background: transparent !important;
+	border: 0 !important;
+	border-bottom: 1px solid var(--silver) !important;
+	border-radius: 0 !important;
+	height: auto !important;
+	min-height: 0 !important;
+}
+.forminator-ui .select2-container--default .select2-selection--single .select2-selection__rendered {
+	color: var(--ink) !important;
+	padding: 0.75rem 0 !important;
+	font-size: 1.05rem !important;
+	line-height: 1.4 !important;
+}
+.forminator-ui .select2-container--default .select2-selection--single .select2-selection__arrow { display: none !important; }
+.forminator-ui .select2-container .select2-selection--single .select2-selection__placeholder { color: var(--ink-mute) !important; }
+
+.select2-container--default .select2-dropdown {
+	background: var(--surface) !important;
+	border: 1px solid var(--line) !important;
+	border-radius: 0 !important;
+}
+.select2-container--default .select2-dropdown .select2-results__option {
+	color: var(--ink-soft) !important;
+	font-size: var(--fs-small) !important;
+	padding: 0.6rem 1rem !important;
+}
+.select2-container--default .select2-dropdown .select2-results__option--highlighted[aria-selected],
+.select2-container--default .select2-dropdown .select2-results__option[aria-selected=true] {
+	background-color: var(--surface-2) !important;
+	color: var(--ink) !important;
+}
+
+/* Intl phone input (Forminator uses intlTelInput) */
+.forminator-ui .iti {
+	width: 100% !important;
+}
+.forminator-ui .iti .iti__flag-container {
+	border-right: 1px solid var(--line) !important;
+}
+.forminator-ui .iti.iti--allow-dropdown .iti__flag-container:hover .iti__selected-flag { background-color: transparent !important; }
+.forminator-ui .iti--separate-dial-code .iti__selected-flag {
+	background: transparent !important;
+}
+.forminator-ui .iti__country-list {
+	background: var(--surface) !important;
+	border: 1px solid var(--line) !important;
+	border-radius: 0 !important;
+	color: var(--ink) !important;
+}
+.forminator-ui .iti__country-list .iti__country-name { color: var(--ink) !important; }
+.forminator-ui .iti__country-list .iti__dial-code { color: var(--ink-mute) !important; }
+.forminator-ui .iti__country-list .iti__country.iti__highlight { background-color: var(--surface-2) !important; }
+
+/* Character counter */
+.forminator-ui .forminator-field .forminator-field__counter {
+	font-size: var(--fs-eyebrow) !important;
+	color: var(--ink-mute) !important;
+	text-align: right !important;
+	letter-spacing: var(--tk-eyebrow) !important;
+	margin-top: 0.4rem !important;
+	font-variant-numeric: tabular-nums !important;
+}
+
+/* Submit button */
+.forminator-ui .forminator-button,
+.forminator-ui button[type="submit"] {
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	gap: 0.6em !important;
+	font-family: var(--font-body) !important;
+	font-size: var(--fs-small) !important;
+	font-weight: 600 !important;
+	text-transform: uppercase !important;
+	letter-spacing: 0.1em !important;
+	padding: 1.05em 2.2em !important;
+	border: 1px solid var(--accent) !important;
+	background: var(--accent) !important;
+	color: var(--accent-ink) !important;
+	border-radius: 0 !important;
+	cursor: pointer !important;
+	transition: all var(--dur) var(--ease) !important;
+	height: auto !important;
+	min-height: 0 !important;
+	line-height: 1 !important;
+	text-shadow: none !important;
+	box-shadow: none !important;
+}
+.forminator-ui .forminator-button:hover {
+	letter-spacing: 0.14em !important;
+	border-color: var(--silver-bright) !important;
+}
+
+/* Multi-column rows: collapse on small screens */
+.forminator-ui .forminator-row {
+	display: block;
+}
+@media (min-width: 561px) {
+	.forminator-ui .forminator-row[data-cols="2"] {
+		display: grid !important;
+		grid-template-columns: 1fr 1fr !important;
+		gap: 1.75rem !important;
+	}
+}
+
+/* Forminator success message */
+.forminator-ui .forminator-response-message {
+	background: var(--surface) !important;
+	border: 1px solid var(--silver) !important;
+	color: var(--ink) !important;
+	padding: 1.5rem !important;
+	border-radius: 0 !important;
+	font-family: var(--font-display) !important;
+	font-style: italic !important;
+	font-size: 1.25rem !important;
+}
+.forminator-ui .forminator-response-message .forminator-response-message-title {
+	font-family: var(--font-display) !important;
+	font-style: italic !important;
+	color: var(--ink) !important;
+}
+
+/* Hide Forminator's loading bar default styling */
+.forminator-ui .forminator-loading {
+	background: transparent !important;
+}
+
+/* Checkbox / radio groups (if used) */
+.forminator-ui .forminator-checkbox,
+.forminator-ui .forminator-radio {
+	color: var(--ink-soft) !important;
+}
+.forminator-ui .forminator-checkbox__box,
+.forminator-ui .forminator-radio__box {
+	border-color: var(--silver) !important;
+	background: transparent !important;
+	border-radius: 0 !important;
+}
+.forminator-ui .forminator-checkbox input:checked + .forminator-checkbox__box,
+.forminator-ui .forminator-radio input:checked + .forminator-radio__box {
+	background: var(--ink) !important;
+	border-color: var(--ink) !important;
+}

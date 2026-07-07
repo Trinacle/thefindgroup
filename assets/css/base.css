@@ -1,0 +1,172 @@
+/* =========================================================================
+   TFG — Base & Typography
+   ========================================================================= */
+
+/* ---- Reset essentials ---- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--ink);
+	font-family: var(--font-body);
+	font-size: var(--fs-body);
+	line-height: var(--lh-body);
+	font-weight: 400;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+	transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
+	overflow-x: hidden;
+}
+
+/* Lock scroll when menu / overlays open */
+body.tfg-lock { overflow: hidden; }
+
+img, picture, video, svg { display: block; max-width: 100%; height: auto; }
+img { background: var(--surface); }
+
+a {
+	color: inherit;
+	text-decoration: none;
+	transition: color var(--dur-fast) var(--ease);
+}
+
+button {
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	background: none;
+	border: 0;
+	cursor: pointer;
+}
+
+ul, ol { margin: 0; padding: 0; }
+li { list-style: none; }
+
+p { margin: 0 0 1.5rem; }
+p:last-child { margin-bottom: 0; }
+
+::selection { background: var(--ink); color: var(--bg); }
+
+/* ---- Typography ---- */
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--font-display);
+	font-weight: 500;
+	line-height: var(--lh-h2);
+	margin: 0;
+	color: var(--ink);
+	letter-spacing: var(--tk-h2);
+}
+
+h1 { font-size: var(--fs-h1); line-height: var(--lh-display); letter-spacing: var(--tk-display); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); line-height: var(--lh-h3); letter-spacing: 0; }
+h4 { font-size: var(--fs-h4); font-family: var(--font-body); font-weight: 600; letter-spacing: 0; }
+
+.eyebrow {
+	font-family: var(--font-body);
+	font-size: var(--fs-eyebrow);
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: var(--tk-eyebrow);
+	color: var(--silver-bright);
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6em;
+}
+.eyebrow::before {
+	content: "";
+	width: 24px;
+	height: 1px;
+	background: var(--silver);
+	display: inline-block;
+}
+.eyebrow--bare::before { display: none; }
+
+.display-1 { font-size: var(--fs-hero); line-height: var(--lh-display); letter-spacing: var(--tk-display); }
+.display-italic { font-style: italic; }
+
+.lead {
+	font-size: var(--fs-body-l);
+	line-height: var(--lh-body-l);
+	color: var(--ink-soft);
+	max-width: 60ch;
+}
+
+.muted { color: var(--ink-mute); }
+.soft  { color: var(--ink-soft); }
+
+/* ---- Layout primitives ---- */
+.container {
+	width: 100%;
+	max-width: var(--container);
+	margin-inline: auto;
+	padding-inline: var(--gutter);
+}
+.container--narrow { max-width: var(--container-narrow); }
+.container--wide   { max-width: var(--container-wide); }
+
+.section { padding-block: var(--pad-y); }
+.section--sm { padding-block: var(--pad-y-sm); }
+.section--tight { padding-block: clamp(2rem, 4vh, 4rem); }
+
+.section__head { margin-bottom: clamp(2rem, 5vw, 4rem); }
+.section__head .eyebrow { margin-bottom: 1.25rem; }
+.section__head h2 { max-width: 18ch; }
+.section__head p { margin-top: 1.5rem; max-width: 60ch; color: var(--ink-soft); }
+
+/* Hairline rule */
+.rule { height: 1px; background: var(--line); border: 0; width: 100%; }
+.rule--silver { background: var(--silver); }
+.rule--short { width: 64px; height: 1px; background: var(--silver-bright); }
+
+/* ---- Accessibility ---- */
+:focus-visible {
+	outline: 1px solid var(--silver-bright);
+	outline-offset: 3px;
+}
+.sr-only {
+	position: absolute; width: 1px; height: 1px;
+	padding: 0; margin: -1px; overflow: hidden;
+	clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+.skip-link {
+	position: absolute; left: -9999px; top: 0;
+	background: var(--bg); color: var(--ink);
+	padding: 1rem 1.5rem; z-index: 9999;
+	font-size: var(--fs-small); border: 1px solid var(--line);
+}
+.skip-link:focus { left: 1rem; top: 1rem; }
+
+/* ---- WP admin bar offset ---- */
+body.admin-bar { --header-h: calc(88px + 32px); }
+
+/* ---- Entrance animation utility (GSAP targets these) ---- */
+[data-reveal] { opacity: 0; transform: translateY(24px); }
+[data-reveal-img] { clip-path: inset(100% 0 0 0); }
+
+/* Reduced motion: show immediately */
+@media (prefers-reduced-motion: reduce) {
+	[data-reveal], [data-reveal-img] { opacity: 1; transform: none; clip-path: none; }
+}
+
+/* ---- Utility ---- */
+.text-center { text-align: center; }
+.text-right  { text-align: right; }
+.flex { display: flex; }
+.flex--between { justify-content: space-between; align-items: center; }
+.gap-sm { gap: 1rem; }
+.gap-md { gap: 2rem; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(1.5rem, 3vw, 3rem); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 3vw, 3rem); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1.5rem, 3vw, 3rem); }
+
+@media (max-width: 960px) {
+	.grid-4 { grid-template-columns: repeat(2, 1fr); }
+	.grid-3 { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+	.grid-2, .grid-4 { grid-template-columns: 1fr; }
+}

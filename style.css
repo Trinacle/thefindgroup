@@ -1,0 +1,21 @@
+/**
+ * Theme Name: THE FINDGROUP — Luxury
+ * Theme URI: https://thefindgroup.com
+ * Author: Trinacle
+ * Author URI: https://thefindgroup.com
+ * Description: Bespoke luxury theme for THE FINDGROUP — Yachts, Real Estate, Aircraft & Armored Luxury Vehicles. Black, white & silver monochrome with dual dark/light mode. Selling Luxury Assets Since 1985.
+ * Version: 1.0.0
+ * Requires at least: 6.2
+ * Tested up to: 6.7
+ * Requires PHP: 8.0
+ * License: GNU General Public License v2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: tfg
+ * Tags: luxury, brokerage, yachts, real-estate, dark-mode, woocommerce, custom-logo, custom-menu, featured-images, translation-ready
+ *
+ * THE FINDGROUP Luxury Theme
+ * A hand-crafted classic WordPress theme built for editorial-grade luxury.
+ */
+
+/* All stylesheets are enqueued via functions.php for proper dependency management.
+   This file holds only the required theme header above. */

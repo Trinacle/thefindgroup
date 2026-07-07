@@ -1,0 +1,29 @@
+# WordPress
+/wp-config.php
+/wp-content/uploads/
+/wp-content/upgrade/
+/wp-content/backup*/
+/wp-content/cache/
+/wp-content/wflogs/
+
+# Node / build artifacts
+/node_modules/
+/npm-debug.log
+/yarn-error.log
+/dist/
+/build/
+
+# Editor
+/.vscode/
+/.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# OS
+*.tmp
+*.bak
+
+# Keep the img directory but track its README
+# (actual images should be sourced from wp-content/uploads in production)

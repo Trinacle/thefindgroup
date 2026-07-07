@@ -1,0 +1,113 @@
+/* =========================================================================
+   TFG — WooCommerce Overrides
+   We ship our own product card markup (see inc/woocommerce.php) so this
+   file mainly handles archive chrome, single-product layout, notices,
+   and the broker tab.
+   ========================================================================= */
+
+/* Hide WooCommerce's default notices banner chrome (keep messages) */
+.woocommerce-message,
+.woocommerce-info,
+.woocommerce-error {
+	background: var(--surface);
+	border: 1px solid var(--line);
+	color: var(--ink);
+	padding: 1rem 1.5rem;
+	border-radius: 0;
+	margin: 0 0 1.5rem;
+	font-size: var(--fs-small);
+}
+.woocommerce-message::before,
+.woocommerce-info::before,
+.woocommerce-error::before { color: var(--silver-bright); }
+
+/* Product gallery (single) */
+.tfg-single-gallery .woocommerce-product-gallery {
+	position: relative;
+	margin-bottom: 1.5rem;
+}
+.tfg-single-gallery .woocommerce-product-gallery__image img {
+	width: 100%;
+	height: auto;
+	background: var(--surface-2);
+}
+.tfg-single-gallery .flex-control-thumbs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-top: 0.5rem;
+}
+.tfg-single-gallery .flex-control-thumbs li {
+	flex: 0 0 calc(25% - 0.4rem);
+	list-style: none;
+}
+.tfg-single-gallery .flex-control-thumbs img {
+	width: 100%;
+	height: 80px;
+	object-fit: cover;
+	opacity: 0.5;
+	cursor: pointer;
+	transition: opacity var(--dur-fast) var(--ease);
+}
+.tfg-single-gallery .flex-control-thumbs img:hover,
+.tfg-single-gallery .flex-control-thumbs img.flex-active { opacity: 1; }
+
+/* Single product summary */
+.tfg-single .product .summary { color: var(--ink); }
+.tfg-single .product .summary .product_title { display: none; } /* we render our own */
+.tfg-single .product .summary .price { font-size: 1.5rem; color: var(--ink); margin-bottom: 1.5rem; }
+.tfg-single .product .summary .woocommerce-product-details__short-description { color: var(--ink-soft); margin-bottom: 1.5rem; }
+
+/* Product tabs */
+.tfg-single .woocommerce-tabs { margin-top: clamp(3rem, 6vh, 5rem); border-top: 1px solid var(--line); padding-top: clamp(2rem, 4vh, 3rem); }
+.tfg-single .woocommerce-tabs .tabs {
+	display: flex;
+	gap: 2rem;
+	margin: 0 0 2rem;
+	padding: 0;
+	border-bottom: 1px solid var(--line);
+}
+.tfg-single .woocommerce-tabs .tabs li { list-style: none; }
+.tfg-single .woocommerce-tabs .tabs a {
+	font-size: var(--fs-eyebrow);
+	letter-spacing: var(--tk-eyebrow);
+	text-transform: uppercase;
+	color: var(--ink-mute);
+	padding: 0.75rem 0;
+	display: inline-block;
+	border-bottom: 1px solid transparent;
+	transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+.tfg-single .woocommerce-tabs .tabs li.active a { color: var(--ink); border-bottom-color: var(--silver-bright); }
+.tfg-single .woocommerce-tabs .woocommerce-Tabs-panel h2 { font-size: var(--fs-h3); margin-bottom: 1rem; }
+.tfg-single .woocommerce-tabs .woocommerce-Tabs-panel p { color: var(--ink-soft); }
+
+/* Hide the WooCommerce default "Related products" heading style */
+.tfg-single .related.products h2 { font-size: var(--fs-h3); margin-bottom: 1.5rem; }
+
+/* Sale flash */
+.tfg-single .product span.onsale { display: none; }
+
+/* Rating — hide (brokerage, not e-commerce) */
+.tfg-single .woocommerce-product-rating { display: none; }
+
+/* Cart / checkout redirects disabled; suppress residual cart UI */
+.woocommerce-cart, .woocommerce-checkout { display: none; }
+
+/* Product meta — hide (we use broker tab instead) */
+.tfg-single .product_meta { display: none; }
+
+/* Variation / grouped product tweaks */
+.tfg-single .variations { width: 100%; }
+.tfg-single .variations td { padding: 0.5rem 0; }
+.tfg-single .variations label { color: var(--ink-soft); font-size: var(--fs-small); }
+
+/* Empty cart / no-results message */
+.woocommerce-info { color: var(--ink-soft); }
+
+/* Account / login pages — minimal restyle */
+.woocommerce-account .woocommerce { padding: calc(var(--header-h) + 2rem) var(--gutter) 4rem; max-width: var(--container); margin-inline: auto; }
+.woocommerce-account .woocommerce-MyAccount-navigation ul { display: flex; flex-direction: column; gap: 0.5rem; }
+.woocommerce-account .woocommerce-MyAccount-navigation a { color: var(--ink-soft); font-size: var(--fs-small); }
+.woocommerce-account .woocommerce-MyAccount-navigation a:hover { color: var(--ink); }
+.woocommerce-account .woocommerce-MyAccount-navigation li.is-active a { color: var(--ink); border-left: 1px solid var(--silver-bright); padding-left: 0.75rem; }

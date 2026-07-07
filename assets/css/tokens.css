@@ -1,0 +1,122 @@
+/* =========================================================================
+   TFG — Design Tokens
+   Black · White · Silver monochrome. Dual dark/light mode.
+   ========================================================================= */
+
+:root {
+	/* ---- Type families ---- */
+	--font-display: "Cormorant Garamond", "Times New Roman", Georgia, serif;
+	--font-body:    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+
+	/* ---- Type scale (fluid via clamp) ---- */
+	--fs-hero:    clamp(3rem, 8vw, 8.5rem);
+	--fs-h1:      clamp(2.5rem, 5vw, 4.5rem);
+	--fs-h2:      clamp(2rem, 3.5vw, 3rem);
+	--fs-h3:      clamp(1.5rem, 2vw, 2rem);
+	--fs-h4:      clamp(1.25rem, 1.4vw, 1.5rem);
+	--fs-body-l:  1.125rem;
+	--fs-body:    1rem;
+	--fs-small:   0.875rem;
+	--fs-caption: 0.8125rem;
+	--fs-eyebrow: 0.75rem;
+	--fs-price:   1.25rem;
+
+	/* ---- Tracking ---- */
+	--tk-display: -0.02em;
+	--tk-h2:      -0.01em;
+	--tk-eyebrow: 0.2em;
+	--tk-meta:    0.04em;
+
+	/* ---- Leading ---- */
+	--lh-display: 0.98;
+	--lh-h2:      1.05;
+	--lh-h3:      1.15;
+	--lh-body:    1.65;
+	--lh-body-l:  1.7;
+
+	/* ---- Layout ---- */
+	--container:        1440px;
+	--container-narrow: 860px;
+	--container-wide:   1600px;
+	--gutter:           clamp(1.5rem, 4vw, 4rem);
+	--pad-y:            clamp(5rem, 12vh, 10rem);
+	--pad-y-sm:         clamp(3rem, 7vh, 6rem);
+
+	/* ---- Radii (luxury = mostly square) ---- */
+	--r-0: 0;
+	--r-1: 2px;
+	--r-2: 4px;
+	--r-pill: 999px;
+
+	/* ---- Motion ---- */
+	--ease:        cubic-bezier(0.22, 1, 0.36, 1);
+	--ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+	--dur-fast:    200ms;
+	--dur:         400ms;
+	--dur-slow:    700ms;
+
+	/* ---- Header height ---- */
+	--header-h: 88px;
+	--header-h-sm: 64px;
+}
+
+/* ---- DARK MODE (default) ---- */
+:root,
+:root[data-theme="dark"] {
+	--bg:           #0A0A0B;  /* obsidian */
+	--surface:      #141416;  /* graphite */
+	--surface-2:    #1E1E21;  /* raised panel */
+	--surface-3:    #26262A;
+	--ink:          #F5F5F3;  /* ivory */
+	--ink-soft:     #B8B8BC;
+	--ink-mute:     #7A7A80;
+	--silver:       #A8A8AE;
+	--silver-bright:#D4D4D8;
+	--line:         rgba(255, 255, 255, 0.14);
+	--line-soft:    rgba(255, 255, 255, 0.07);
+	--accent:       #FFFFFF;          /* primary button = inverse */
+	--accent-ink:   #0A0A0B;          /* text on accent */
+	--chrome:       linear-gradient(135deg, #D4D4D8 0%, #6E6E73 100%);
+	--overlay:      rgba(10, 10, 11, 0.78);
+	--shadow:       0 24px 60px rgba(0, 0, 0, 0.6);
+	color-scheme: dark;
+}
+
+/* ---- LIGHT MODE ---- */
+:root[data-theme="light"] {
+	--bg:           #FFFFFF;  /* paper */
+	--surface:      #F4F4F5;  /* platinum */
+	--surface-2:    #EAEAEC;
+	--surface-3:    #DEDEE1;
+	--ink:          #0A0A0B;
+	--ink-soft:     #3A3A3F;
+	--ink-mute:     #6E6E73;
+	--silver:       #8A8A90;
+	--silver-bright:#5A5A60;  /* darker for light-bg contrast */
+	--line:         rgba(10, 10, 11, 0.12);
+	--line-soft:    rgba(10, 10, 11, 0.06);
+	--accent:       #0A0A0B;          /* primary button = inverse */
+	--accent-ink:   #FFFFFF;
+	--chrome:       linear-gradient(135deg, #8A8A90 0%, #3A3A3F 100%);
+	--overlay:      rgba(255, 255, 255, 0.82);
+	--shadow:       0 24px 60px rgba(10, 10, 11, 0.14);
+	color-scheme: light;
+}
+
+/* ---- Chrome text fill (silver gradient on text) ---- */
+.tfg-chrome-text {
+	background: var(--chrome);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+	-webkit-text-fill-color: transparent;
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+	:root {
+		--dur-fast: 0ms;
+		--dur:      0ms;
+		--dur-slow: 0ms;
+	}
+}

@@ -1,0 +1,393 @@
+/* =========================================================================
+   TFG — Layouts & Pages
+   Home sections, inner-page compositions, editorial splits, magazine
+   spreads, catalog, contact, about, etc. Per the design: each page uses a
+   different composition so the site feels curated, not templated.
+   ========================================================================= */
+
+/* =========================================================================
+   HOME — Section 3: Trending carousel
+   ========================================================================= */
+.tfg-trending { position: relative; }
+.tfg-trending__rail {
+	display: flex;
+	gap: clamp(1rem, 2vw, 1.5rem);
+	overflow-x: auto;
+	scroll-snap-type: x mandatory;
+	padding-bottom: 1.5rem;
+	scrollbar-width: thin;
+	scrollbar-color: var(--silver) transparent;
+	-webkit-overflow-scrolling: touch;
+}
+.tfg-trending__rail::-webkit-scrollbar { height: 4px; }
+.tfg-trending__rail::-webkit-scrollbar-track { background: var(--line-soft); }
+.tfg-trending__rail::-webkit-scrollbar-thumb { background: var(--silver); }
+.tfg-trending__item {
+	flex: 0 0 clamp(300px, 32vw, 420px);
+	scroll-snap-align: start;
+}
+
+/* =========================================================================
+   HOME — Section 4: Brand statement (editorial split 7/5)
+   ========================================================================= */
+.tfg-split {
+	display: grid;
+	grid-template-columns: 7fr 5fr;
+	gap: clamp(2rem, 5vw, 5rem);
+	align-items: center;
+}
+.tfg-split--reverse { grid-template-columns: 5fr 7fr; }
+.tfg-split__media { aspect-ratio: 4 / 5; overflow: hidden; background: var(--surface-2); }
+.tfg-split__media img { width: 100%; height: 100%; object-fit: cover; }
+.tfg-split__content { max-width: 48ch; }
+.tfg-split__content .eyebrow { margin-bottom: 1.5rem; }
+.tfg-split__content h2 { margin-bottom: 1.5rem; }
+.tfg-split__content p { color: var(--ink-soft); }
+.tfg-split__actions { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+@media (max-width: 860px) {
+	.tfg-split, .tfg-split--reverse { grid-template-columns: 1fr; }
+	.tfg-split__media { aspect-ratio: 16 / 10; order: -1; }
+}
+
+/* =========================================================================
+   HOME — Section 7: Why Sell (magazine spread, 3-col with center image)
+   ========================================================================= */
+.tfg-magazine {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: clamp(2rem, 4vw, 4rem);
+	align-items: start;
+	position: relative;
+}
+.tfg-magazine__col { padding-top: 2rem; }
+.tfg-magazine__col:nth-child(2) { padding-top: 0; }
+.tfg-magazine__num {
+	font-family: var(--font-body);
+	font-size: var(--fs-eyebrow);
+	letter-spacing: var(--tk-eyebrow);
+	color: var(--silver-bright);
+	margin-bottom: 1rem;
+}
+.tfg-magazine__col h3 {
+	font-family: var(--font-display);
+	font-size: var(--fs-h3);
+	margin-bottom: 1rem;
+}
+.tfg-magazine__col p { color: var(--ink-soft); font-size: var(--fs-small); }
+.tfg-magazine__feature {
+	grid-column: 2;
+	grid-row: 1;
+	height: 100%;
+	aspect-ratio: 3 / 4;
+	overflow: hidden;
+	background: var(--surface-2);
+}
+.tfg-magazine__feature img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 860px) {
+	.tfg-magazine { grid-template-columns: 1fr; }
+	.tfg-magazine__feature { grid-column: 1; grid-row: 1; aspect-ratio: 16 / 10; }
+	.tfg-magazine__col { grid-column: 1; padding-top: 1rem; }
+}
+
+/* =========================================================================
+   HOME — Section 8: Team teaser (diptych)
+   ========================================================================= */
+.tfg-diptych {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: clamp(1rem, 2vw, 1.5rem);
+	position: relative;
+}
+.tfg-diptych__panel {
+	aspect-ratio: 3 / 4;
+	overflow: hidden;
+	background: var(--surface-2);
+	position: relative;
+}
+.tfg-diptych__panel img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease); }
+.tfg-diptych__panel:hover img { transform: scale(1.04); }
+.tfg-diptych__caption {
+	position: absolute;
+	inset: auto 0 0 0;
+	padding: 1.5rem;
+	background: linear-gradient(180deg, transparent, rgba(10,10,11,0.8));
+	color: #F5F5F3;
+}
+:root[data-theme="light"] .tfg-diptych__caption { background: linear-gradient(180deg, transparent, rgba(255,255,255,0.85)); color: var(--ink); }
+.tfg-diptych__caption .eyebrow { color: var(--silver-bright); margin-bottom: 0.5rem; }
+.tfg-diptych__caption h3 { font-family: var(--font-display); font-size: 1.5rem; }
+@media (max-width: 640px) { .tfg-diptych { grid-template-columns: 1fr; } }
+
+/* =========================================================================
+   INNER — Generic page header (slim hero)
+   ========================================================================= */
+.tfg-page-header {
+	padding: calc(var(--header-h) + clamp(3rem, 8vh, 6rem)) 0 clamp(2rem, 5vh, 4rem);
+	border-bottom: 1px solid var(--line);
+}
+.tfg-page-header__eyebrow { margin-bottom: 1.25rem; }
+.tfg-page-header h1 { font-size: var(--fs-h1); max-width: 16ch; }
+.tfg-page-header__sub { margin-top: 1.5rem; color: var(--ink-soft); max-width: 50ch; font-size: var(--fs-body-l); }
+
+/* =========================================================================
+   ABOUT — Three-act editorial (stacked panels, alternating)
+   ========================================================================= */
+.tfg-act {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: clamp(2rem, 5vw, 5rem);
+	align-items: center;
+	padding-block: var(--pad-y-sm);
+}
+.tfg-act:nth-child(even) .tfg-act__media { order: 2; }
+.tfg-act__media { aspect-ratio: 4 / 5; overflow: hidden; background: var(--surface-2); }
+.tfg-act__media img { width: 100%; height: 100%; object-fit: cover; }
+.tfg-act__content { max-width: 48ch; }
+.tfg-act__content .eyebrow { margin-bottom: 1.25rem; }
+.tfg-act__content h3 { font-size: var(--fs-h2); margin-bottom: 1.5rem; }
+.tfg-act__content p { color: var(--ink-soft); margin-bottom: 1rem; }
+@media (max-width: 860px) {
+	.tfg-act { grid-template-columns: 1fr; }
+	.tfg-act:nth-child(even) .tfg-act__media { order: 0; }
+	.tfg-act__media { aspect-ratio: 16 / 10; }
+}
+
+/* =========================================================================
+   ABOUT — 3-column block (Real Estate Sales / Global Media / Intl Marketing)
+   ========================================================================= */
+.tfg-three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 3vw, 3rem); }
+@media (max-width: 860px) { .tfg-three-col { grid-template-columns: 1fr; } }
+.tfg-three-col__item h3 { font-family: var(--font-display); font-size: var(--fs-h3); margin-bottom: 1rem; }
+.tfg-three-col__item p { color: var(--ink-soft); font-size: var(--fs-small); }
+
+/* =========================================================================
+   CONTACT — Two-column (offices + form)
+   ========================================================================= */
+.tfg-contact {
+	display: grid;
+	grid-template-columns: 5fr 7fr;
+	gap: clamp(2rem, 5vw, 5rem);
+	align-items: start;
+}
+@media (max-width: 960px) { .tfg-contact { grid-template-columns: 1fr; } }
+.tfg-contact__offices { position: sticky; top: calc(var(--header-h) + 2rem); }
+@media (max-width: 960px) { .tfg-contact__offices { position: static; } }
+
+/* =========================================================================
+   SELL WITH US — Stacked reason panels (8 reasons, 2-col with numerals)
+   ========================================================================= */
+.tfg-reasons { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 4vw, 4rem) clamp(2rem, 4vw, 4rem); }
+@media (max-width: 760px) { .tfg-reasons { grid-template-columns: 1fr; } }
+.tfg-reason { display: grid; grid-template-columns: auto 1fr; gap: 1.5rem; align-items: start; padding-bottom: 2rem; border-bottom: 1px solid var(--line-soft); }
+.tfg-reason__num {
+	font-family: var(--font-display);
+	font-size: clamp(2rem, 3vw, 2.5rem);
+	font-weight: 500;
+	color: transparent;
+	background: var(--chrome);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	line-height: 1;
+	min-width: 2.5ch;
+}
+.tfg-reason__body h3 { font-family: var(--font-display); font-size: var(--fs-h3); margin-bottom: 0.75rem; }
+.tfg-reason__body p { color: var(--ink-soft); font-size: var(--fs-small); }
+
+/* =========================================================================
+   AIRCRAFT — Stacked full-bleed panels
+   ========================================================================= */
+.tfg-panel-stack { display: flex; flex-direction: column; gap: clamp(1rem, 2vw, 2rem); }
+.tfg-panel {
+	position: relative;
+	aspect-ratio: 21 / 9;
+	overflow: hidden;
+	background: var(--surface-2);
+	display: flex;
+	align-items: flex-end;
+}
+.tfg-panel__img { position: absolute; inset: 0; }
+.tfg-panel__img img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease); }
+.tfg-panel:hover .tfg-panel__img img { transform: scale(1.04); }
+.tfg-panel__img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(10,10,11,0.85)); }
+.tfg-panel__content { position: relative; z-index: 2; padding: clamp(1.5rem, 4vw, 3rem); color: #F5F5F3; }
+:root[data-theme="light"] .tfg-panel__content { color: var(--ink); }
+:root[data-theme="light"] .tfg-panel__img::after { background: linear-gradient(180deg, transparent 40%, rgba(255,255,255,0.85)); }
+.tfg-panel__content .eyebrow { color: var(--silver-bright); margin-bottom: 0.75rem; }
+.tfg-panel__content h3 { font-family: var(--font-display); font-size: var(--fs-h2); color: inherit; }
+.tfg-panel__content p { margin-top: 0.75rem; max-width: 40ch; color: var(--silver-bright); }
+@media (max-width: 760px) { .tfg-panel { aspect-ratio: 4 / 5; } }
+
+/* =========================================================================
+   ARMORED — Diptych + capability list
+   ========================================================================= */
+.tfg-cap-list { border-top: 1px solid var(--line); }
+.tfg-cap-row {
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	gap: 1.5rem;
+	align-items: baseline;
+	padding: 1.25rem 0;
+	border-bottom: 1px solid var(--line-soft);
+}
+.tfg-cap-row__num { font-size: var(--fs-eyebrow); letter-spacing: var(--tk-eyebrow); color: var(--silver-bright); font-variant-numeric: tabular-nums; }
+.tfg-cap-row__title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 500; }
+.tfg-cap-row__desc { font-size: var(--fs-small); color: var(--ink-soft); max-width: 32ch; text-align: right; }
+@media (max-width: 640px) {
+	.tfg-cap-row { grid-template-columns: auto 1fr; }
+	.tfg-cap-row__desc { grid-column: 2; text-align: left; }
+}
+
+/* =========================================================================
+   LISTING ARCHIVE (WooCommerce)
+   ========================================================================= */
+.tfg-archive { padding: calc(var(--header-h) + clamp(2rem, 5vh, 4rem)) 0 var(--pad-y); }
+.tfg-archive__header { margin-bottom: clamp(2rem, 4vh, 3rem); }
+.tfg-archive__header h1 { font-size: var(--fs-h1); }
+.tfg-archive__header p { margin-top: 1rem; color: var(--ink-soft); max-width: 50ch; }
+.tfg-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 1.25rem 0;
+	border-top: 1px solid var(--line);
+	border-bottom: 1px solid var(--line);
+	margin-bottom: clamp(2rem, 4vh, 3rem);
+	flex-wrap: wrap;
+}
+.tfg-toolbar__count { font-size: var(--fs-eyebrow); letter-spacing: var(--tk-eyebrow); text-transform: uppercase; color: var(--ink-mute); }
+.tfg-toolbar__count .num { color: var(--ink); font-weight: 600; }
+.tfg-toolbar__sort { font-size: var(--fs-small); }
+.tfg-toolbar__sort .orderby {
+	background: transparent;
+	border: 0;
+	border-bottom: 1px solid var(--silver);
+	color: var(--ink);
+	font-family: var(--font-body);
+	font-size: var(--fs-small);
+	padding: 0.4rem 1.5rem 0.4rem 0;
+	cursor: pointer;
+	-webkit-appearance: none;
+	appearance: none;
+	outline: none;
+}
+.tfg-toolbar__sort .orderby option { background: var(--bg); }
+
+/* Product grid */
+.tfg-products-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+@media (max-width: 1080px) { .tfg-products-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .tfg-products-grid { grid-template-columns: 1fr; } }
+
+/* Pagination */
+.tfg-pagination { display: flex; justify-content: center; gap: 0.5rem; margin-top: clamp(3rem, 6vh, 5rem); }
+.tfg-pagination a, .tfg-pagination span {
+	width: 40px; height: 40px;
+	display: inline-flex; align-items: center; justify-content: center;
+	border: 1px solid var(--line);
+	font-size: var(--fs-small);
+	color: var(--ink-soft);
+	transition: all var(--dur-fast) var(--ease);
+}
+.tfg-pagination a:hover { border-color: var(--silver); color: var(--ink); }
+.tfg-pagination .current { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* =========================================================================
+   SINGLE PRODUCT (listing detail)
+   ========================================================================= */
+.tfg-single { padding: calc(var(--header-h) + 2rem) 0 var(--pad-y); }
+.tfg-single__top { margin-bottom: 2rem; }
+.tfg-single__top .eyebrow { margin-bottom: 0.75rem; }
+.tfg-single__title { font-size: var(--fs-h1); line-height: 1.05; }
+.tfg-single__price { font-family: var(--font-body); font-size: 1.5rem; font-weight: 600; color: var(--ink); margin-top: 0.75rem; font-variant-numeric: tabular-nums; }
+
+.tfg-single__grid {
+	display: grid;
+	grid-template-columns: 1.4fr 1fr;
+	gap: clamp(2rem, 4vw, 4rem);
+	align-items: start;
+}
+@media (max-width: 960px) { .tfg-single__grid { grid-template-columns: 1fr; } }
+
+.tfg-single__summary { position: sticky; top: calc(var(--header-h) + 2rem); }
+@media (max-width: 960px) { .tfg-single__summary { position: static; } }
+.tfg-single__summary h2 { font-size: var(--fs-h3); margin-bottom: 1rem; }
+.tfg-single__summary p { color: var(--ink-soft); }
+.tfg-single__specs {
+	margin: 2rem 0;
+	border-top: 1px solid var(--line);
+}
+.tfg-single__spec {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1rem;
+	padding: 1rem 0;
+	border-bottom: 1px solid var(--line-soft);
+	font-size: var(--fs-small);
+}
+.tfg-single__spec dt { color: var(--ink-mute); letter-spacing: var(--tk-meta); text-transform: uppercase; font-size: var(--fs-eyebrow); }
+.tfg-single__spec dd { margin: 0; color: var(--ink); font-weight: 500; }
+
+.tfg-single-enquiry { display: flex; flex-direction: column; gap: 0.75rem; margin: 2rem 0; }
+
+/* Broker card on single product */
+.tfg-broker-card { display: flex; gap: 1.25rem; align-items: center; padding: 1.5rem; border: 1px solid var(--line); background: var(--surface); margin-top: 2rem; }
+.tfg-broker-card__img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; }
+.tfg-broker-card__name { font-family: var(--font-display); font-size: 1.25rem; }
+.tfg-broker-card__role { font-size: var(--fs-eyebrow); letter-spacing: var(--tk-eyebrow); text-transform: uppercase; color: var(--silver-bright); margin-top: 0.25rem; }
+
+/* =========================================================================
+   LEGAL (Privacy / Terms) — long-form narrow column
+   ========================================================================= */
+.tfg-legal { padding: calc(var(--header-h) + clamp(2rem, 5vh, 4rem)) 0 var(--pad-y); }
+.tfg-legal__layout { display: grid; grid-template-columns: 220px 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+@media (max-width: 860px) { .tfg-legal__layout { grid-template-columns: 1fr; } }
+.tfg-legal__toc { position: sticky; top: calc(var(--header-h) + 2rem); }
+@media (max-width: 860px) { .tfg-legal__toc { position: static; display: none; } }
+.tfg-legal__toc h4 { font-size: var(--fs-eyebrow); letter-spacing: var(--tk-eyebrow); text-transform: uppercase; color: var(--silver-bright); margin-bottom: 1rem; }
+.tfg-legal__toc ul { display: flex; flex-direction: column; gap: 0.5rem; }
+.tfg-legal__toc a { font-size: var(--fs-small); color: var(--ink-soft); }
+.tfg-legal__toc a:hover { color: var(--ink); }
+.tfg-legal__content { max-width: 720px; }
+.tfg-legal__content h2 { font-size: var(--fs-h3); margin: 2.5rem 0 1rem; }
+.tfg-legal__content h2:first-child { margin-top: 0; }
+.tfg-legal__content h3 { font-size: var(--fs-h4); font-family: var(--font-body); font-weight: 600; margin: 2rem 0 0.75rem; }
+.tfg-legal__content p { color: var(--ink-soft); margin-bottom: 1rem; }
+.tfg-legal__content ul { margin: 0 0 1rem 1.25rem; }
+.tfg-legal__content li { list-style: disc; margin-bottom: 0.5rem; color: var(--ink-soft); }
+
+/* =========================================================================
+   404
+   ========================================================================= */
+.tfg-404 {
+	min-height: 100vh; min-height: 100svh;
+	display: flex; align-items: center; justify-content: center;
+	text-align: center;
+	position: relative;
+	overflow: hidden;
+}
+.tfg-404__bg { position: absolute; inset: 0; z-index: 0; }
+.tfg-404__bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.35; }
+.tfg-404__bg::after { content: ""; position: absolute; inset: 0; background: var(--overlay); }
+.tfg-404__inner { position: relative; z-index: 2; padding: 2rem; }
+.tfg-404__inner h1 { font-size: var(--fs-h1); font-style: italic; max-width: 16ch; margin: 0 auto 1.5rem; }
+.tfg-404__inner p { color: var(--silver-bright); margin-bottom: 2rem; }
+
+/* =========================================================================
+   SECTION BANDS — alternating dark/light surfaces
+   ========================================================================= */
+.band--surface { background: var(--surface); }
+.band--surface-2 { background: var(--surface-2); }
+.band--border-top { border-top: 1px solid var(--line); }
+.band--border-bottom { border-bottom: 1px solid var(--line); }
+
+/* =========================================================================
+   RESPONSIVE HEADER ADJUSTMENTS
+   ========================================================================= */
+@media (max-width: 1080px) {
+	:root { --header-h: 64px; }
+}
