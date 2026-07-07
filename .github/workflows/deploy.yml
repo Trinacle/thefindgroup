@@ -1,0 +1,105 @@
+# THE FINDGROUP — Auto-Deploy to cPanel via FTP
+# -----------------------------------------------------------------------------
+# Every push to `main` is mirrored to the live WordPress theme directory:
+#   /public_html/wp-content/themes/thefindgroup-luxury/
+#
+# Required GitHub repository secrets (Settings → Secrets and variables → Actions):
+#   FTP_SERVER   — cPanel FTP host (e.g. ftp.thefindgroup.com OR the server IP)
+#   FTP_USERNAME — full FTP username (e.g. thefindgroup OR user@thefindgroup.com)
+#   FTP_PASSWORD — the FTP account password
+#
+# Optional secrets:
+#   FTP_PORT — override the default port (default 21; set 990 for implicit FTPS)
+#
+# The theme folder name on the server is set in env.THEME_DIR below.
+# Only changed files are uploaded; deletions are synced automatically.
+# -----------------------------------------------------------------------------
+name: Deploy to cPanel
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # allow manual runs from the Actions tab
+
+# Prevent overlapping deployments from racing each other.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+# Least-privilege token.
+permissions:
+  contents: read
+
+env:
+  # Theme folder name on the live server. Change here to rename.
+  THEME_DIR: public_html/wp-content/themes/thefindgroup-luxury
+
+jobs:
+  deploy:
+    name: FTP Sync to cPanel
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
+
+      - name: 🔍 Verify secrets are present
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          missing=()
+          [ -z "$FTP_SERVER" ]   && missing+=("FTP_SERVER")
+          [ -z "$FTP_USERNAME" ] && missing+=("FTP_USERNAME")
+          [ -z "$FTP_PASSWORD" ] && missing+=("FTP_PASSWORD")
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::error::Missing GitHub secrets: ${missing[*]}. Add them under Settings → Secrets and variables → Actions. See DEPLOYMENT.md."
+            exit 1
+          fi
+          echo "✓ All required FTP secrets are present."
+
+      - name: 📂 Sync theme to cPanel via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # Deploy INTO the theme directory on the server (relative to FTP root).
+          server-dir: ${{ env.THEME_DIR }}/
+          # The local source is the repo root (the theme folder itself).
+          local-dir: ./
+          # Use FTPS (FTP over TLS) — cPanel enables it by default on port 21.
+          # If your host only offers plain FTP, change this to: ftp
+          protocol: ftps
+          # Strict TLS — switch to "loose" if you get certificate verification errors.
+          security: strict
+          # Mirror deletions: removing a file from the repo removes it from the server.
+          # Re-deploys use a state file so only changed files transfer.
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/.ftpdeploy
+            **/README.md
+            **/DEPLOYMENT.md
+            **/node_modules/**
+            **/.DS_Store
+            **/Thumbs.db
+          # Per-file timeout (ms) for large media uploads.
+          timeout: 60000
+          log-level: standard
+
+      - name: 📝 Summary
+        if: always()
+        run: |
+          echo "### Deploy status: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Target: \`${{ secrets.FTP_SERVER }} → ${{ env.THEME_DIR }}/\`" >> $GITHUB_STEP_SUMMARY
+          echo "Commit: [\`${GITHUB_SHA::7}\`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "✅ Live site updated. Flush any WordPress cache plugin to see changes." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Deploy failed — see logs above. Common fixes in DEPLOYMENT.md → Troubleshooting." >> $GITHUB_STEP_SUMMARY
+          fi

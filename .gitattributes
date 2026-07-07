@@ -1,0 +1,28 @@
+# Normalize line endings across platforms.
+# Text files use LF in the repo, checked out native per OS.
+* text=auto eol=lf
+
+# PHP, JS, CSS — always LF (server is Linux; avoids CRLF issues)
+*.php  text eol=lf
+*.js    text eol=lf
+*.css   text eol=lf
+*.json  text eol=lf
+*.md    text eol=lf
+*.yml   text eol=lf
+*.html  text eol=lf
+*.svg   text eol=lf
+
+# Binary files — never normalize
+*.jpg   binary
+*.jpeg  binary
+*.png   binary
+*.gif   binary
+*.webp  binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.eot   binary
+*.otf   binary
+*.pdf   binary
+*.zip   binary
