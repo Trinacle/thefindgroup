@@ -1,29 +1,25 @@
 ---
 # cPanel Git Version Control deployment manifest.
-# When you click "Deploy HEAD Commit" (or when a GitHub webhook fires),
-# cPanel runs these tasks to publish the repository into the live theme folder.
 #
-# Read cPanel's reference: https://docs.cpanel.net/knowledge-base/web-services/git-deployment/
+# This repo is checked out directly INTO the live theme folder:
+#   public_html/.../wp-content/themes/thefindgroup
 #
-# $DEPLOYPATH is the deployment target — the live theme directory:
-#   /home/USER/public_html/website_21fa4134/staging/7837/wp-content/themes/thefindgroup
+# So the working tree IS the deployment target — no rsync/copy needed.
+# cPanel just needs this file to exist (and be valid YAML) to enable the
+# "Deploy HEAD Commit" button and to run post-deploy tasks.
 #
-# We use rsync to mirror the repo into DEPLOYPATH, excluding files that must
-# never ship to a live WordPress install.
+# Reference: https://docs.cpanel.net/knowledge-base/web-services/git-deployment/
 
 deployment:
   tasks:
-    # Mirror the repo into the live theme directory.
-    # --delete removes files on the live side that no longer exist in the repo.
-    # Exclude dev-only files from the live copy.
-    - >
-      rsync -a --delete
-      --exclude='.git/'
-      --exclude='.github/'
-      --exclude='.cpanel.yml'
-      --exclude='.gitignore'
-      --exclude='.gitattributes'
-      --exclude='node_modules/'
-      --exclude='README.md'
-      --exclude='DEPLOYMENT.md'
-      ./ $DEPLOYPATH/
+    # No copy step required — the repo working tree lives in the theme dir.
+    #
+    # Post-deploy tasks run after `git pull`/checkout completes:
+
+    # Ensure uploaded assets are writable by WordPress (cache, logs, uploads).
+    # These no-op gracefully if the dirs don't exist yet.
+    - find $DEPLOYPATH -type d -name cache -exec chmod 755 {} \;
+    - find $DEPLOYPATH -type d -name logs -exec chmod 755 {} \;
+
+    # Touch a timestamp file so we can confirm the deploy landed from the browser.
+    - date -u "+%Y-%m-%dT%H:%M:%SZ" > $DEPLOYPATH/.deployed

@@ -26,6 +26,11 @@
 # --- Disable directory listing ---
 Options -Indexes
 
+# --- Block webhook secret & log files (defense in depth) ---
+<FilesMatch "(github-webhook-secret|github-deploy\.log|deploy\.log)">
+    Require all denied
+</FilesMatch>
+
 # --- Block the .git directory explicitly (belt and suspenders) ---
 RedirectMatch 401 (?i)/\.git 403
 RedirectMatch 403 (?i)/\.git
