@@ -124,9 +124,20 @@ h4 { font-size: var(--fs-h4); font-family: var(--font-body); font-weight: 600; l
 
 /* ---- Accessibility ---- */
 :focus-visible {
-	outline: 1px solid var(--silver-bright);
+	outline: 2px solid var(--silver-bright);
 	outline-offset: 3px;
+	border-radius: 1px;
 }
+/* Ensure focus ring is visible on dark elements too */
+.tfg-header :focus-visible,
+.tfg-cat-card:focus-visible,
+.tfg-cat-feature:focus-visible,
+.tfg-listing-card:focus-visible {
+	outline: 2px solid #D4D4D8;
+	outline-offset: 2px;
+}
+/* Remove default outline only when focus-visible is supported */
+:focus:not(:focus-visible) { outline: none; }
 .sr-only {
 	position: absolute; width: 1px; height: 1px;
 	padding: 0; margin: -1px; overflow: hidden;
@@ -166,4 +177,16 @@ body.admin-bar { --header-h: calc(88px + 32px); }
 }
 @media (max-width: 640px) {
 	.grid-2, .grid-4 { grid-template-columns: 1fr; }
+}
+
+/* ---- Reduced motion: disable ALL transitions/animations for accessibility ---- */
+@media (prefers-reduced-motion: reduce) {
+	*, *::before, *::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+	.tfg-hero__scroll::after { animation: none; }
+	.tfg-chat-fab__dot { animation: none; }
 }

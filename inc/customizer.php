@@ -84,6 +84,18 @@ function tfg_customize_register( $wp_customize ) {
 		'section' => 'tfg_brand',
 		'type'    => 'text',
 	) );
+
+	// SEO meta description (homepage).
+	$wp_customize->add_setting( 'tfg_meta_description', array(
+		'default'           => __( 'THE FINDGROUP — Selling Luxury Assets Since 1985. Yachts, Real Estate, Aircraft & Armored Luxury Vehicles.', 'tfg' ),
+		'sanitize_callback' => 'sanitize_textarea_field',
+	) );
+	$wp_customize->add_control( 'tfg_meta_description', array(
+		'label'       => __( 'Homepage Meta Description (SEO)', 'tfg' ),
+		'description' => __( 'Shown in search results and social shares. Keep under 160 characters.', 'tfg' ),
+		'section'     => 'tfg_brand',
+		'type'        => 'textarea',
+	) );
 }
 add_action( 'customize_register', 'tfg_customize_register' );
 

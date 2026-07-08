@@ -40,6 +40,11 @@ require_once TFG_DIR . '/inc/woocommerce.php';
 require_once TFG_DIR . '/inc/helpers.php';
 
 /**
+ * SEO: meta tags, Open Graph, structured data.
+ */
+require_once TFG_DIR . '/inc/seo.php';
+
+/**
  * Customizer: theme settings (phone, social, live-chat snippet).
  */
 require_once TFG_DIR . '/inc/customizer.php';
