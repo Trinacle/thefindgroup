@@ -1,5 +1,3 @@
-# THE FINDGROUP theme folder.
-# Kept minimal on purpose — some Apache/cPanel configs disallow Options and
-# Require directives in subdirectory .htaccess files, which causes 500 errors.
-# Directory-listing off is the only safe directive here.
-Options -Indexes
+# Intentionally empty — testing whether any .htaccess directive causes 500.
+# If the folder stops 500ing with this empty file, we know the problem is
+# a disallowed Apache directive (likely Options or Require on this host).
