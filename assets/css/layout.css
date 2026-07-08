@@ -6,6 +6,79 @@
    ========================================================================= */
 
 /* =========================================================================
+   HOME — Section 2: Featured Categories (editorial feature + side grid)
+   ========================================================================= */
+.tfg-cats-feature {
+	display: grid;
+	grid-template-columns: 1.4fr 1fr;
+	gap: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+.tfg-cats-side {
+	display: grid;
+	grid-template-rows: repeat(3, 1fr);
+	gap: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+.tfg-cat-feature {
+	position: relative;
+	display: block;
+	overflow: hidden;
+	background: var(--surface-2);
+	min-height: clamp(420px, 60vh, 640px);
+}
+.tfg-cat-feature__img {
+	position: absolute; inset: 0;
+	width: 100%; height: 100%;
+	object-fit: cover;
+	transition: transform var(--dur-slow) var(--ease);
+}
+.tfg-cat-feature:hover .tfg-cat-feature__img { transform: scale(1.05); }
+.tfg-cat-feature__overlay {
+	position: absolute; inset: 0;
+	background: linear-gradient(180deg, rgba(10,10,11,0.1) 30%, rgba(10,10,11,0.88) 100%);
+	z-index: 1;
+}
+.tfg-cat-feature__arrow {
+	position: absolute; top: 1.5rem; right: 1.5rem; z-index: 3;
+	color: #F5F5F3; font-size: 1.4rem;
+	opacity: 0; transform: translateY(-6px);
+	transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.tfg-cat-feature:hover .tfg-cat-feature__arrow { opacity: 1; transform: translateY(0); }
+.tfg-cat-feature__label {
+	position: absolute; left: 2rem; bottom: 2rem; z-index: 3; color: #F5F5F3;
+}
+.tfg-cat-feature__num {
+	display: block;
+	font-family: var(--font-body); font-size: var(--fs-eyebrow);
+	letter-spacing: var(--tk-eyebrow); text-transform: uppercase;
+	color: var(--silver-bright); margin-bottom: 0.5rem;
+}
+.tfg-cat-feature__name {
+	display: block;
+	font-family: var(--font-display); font-weight: 500;
+	font-size: clamp(2.25rem, 3.5vw, 3.5rem); line-height: 1;
+}
+.tfg-cat-feature__count {
+	display: block; margin-top: 0.6rem;
+	font-size: var(--fs-eyebrow); letter-spacing: var(--tk-eyebrow);
+	text-transform: uppercase; color: var(--silver-bright);
+}
+
+@media (max-width: 900px) {
+	.tfg-cats-feature { grid-template-columns: 1fr; }
+	.tfg-cat-feature { min-height: 380px; }
+	.tfg-cats-side { grid-template-rows: none; grid-template-columns: 1fr; }
+}
+
+/* Category side card — extended with numbered label */
+.tfg-cat-card__num {
+	display: block;
+	font-family: var(--font-body); font-size: var(--fs-eyebrow);
+	letter-spacing: var(--tk-eyebrow); text-transform: uppercase;
+	color: var(--silver-bright); margin-bottom: 0.35rem;
+}
+
+/* =========================================================================
    HOME — Section 3: Trending carousel
    ========================================================================= */
 .tfg-trending { position: relative; }

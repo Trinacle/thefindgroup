@@ -91,6 +91,8 @@
 /* =========================================================================
    2. HEADER
    ========================================================================= */
+/* HEADER — always dark (obsidian) even in light mode, per design request.
+   Header text/links use ivory for contrast against the permanent dark bar. */
 .tfg-header {
 	position: fixed;
 	top: 0; left: 0; right: 0;
@@ -98,15 +100,42 @@
 	height: var(--header-h);
 	display: flex;
 	align-items: center;
-	transition: background-color var(--dur) var(--ease), backdrop-filter var(--dur) var(--ease), border-color var(--dur) var(--ease);
-	border-bottom: 1px solid transparent;
-}
-.tfg-header.is-scrolled {
-	background: var(--overlay);
+	background: rgba(10, 10, 11, 0.92);
 	-webkit-backdrop-filter: saturate(160%) blur(20px);
 	backdrop-filter: saturate(160%) blur(20px);
-	border-bottom-color: var(--line);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+	transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+	color: #F5F5F3;
 }
+.tfg-header.is-scrolled {
+	background: rgba(10, 10, 11, 0.98);
+	border-bottom-color: rgba(255, 255, 255, 0.22);
+}
+/* Force header text to ivory regardless of light/dark mode */
+.tfg-header,
+.tfg-header a,
+.tfg-header button,
+.tfg-header .tfg-brand,
+.tfg-header .tfg-nav__link,
+.tfg-header .tfg-text-link,
+.tfg-header .tfg-btn--ghost {
+	color: #F5F5F3;
+}
+.tfg-header .tfg-btn--primary {
+	background: #F5F5F3;
+	color: #0A0A0B;
+	border-color: #F5F5F3;
+}
+.tfg-header .tfg-btn--primary:hover {
+	background: #D4D4D8;
+	border-color: #D4D4D8;
+}
+.tfg-header .tfg-mega {
+	background: #141416;
+	border-color: rgba(255,255,255,0.14);
+}
+.tfg-header .tfg-mega a { color: #B8B8BC; }
+.tfg-header .tfg-mega a:hover { color: #F5F5F3; }
 .tfg-header__inner {
 	width: 100%;
 	max-width: var(--container-wide);
@@ -341,10 +370,14 @@
 .tfg-hero__media::after {
 	content: "";
 	position: absolute; inset: 0;
-	background: linear-gradient(180deg, rgba(10,10,11,0.55) 0%, rgba(10,10,11,0.2) 35%, rgba(10,10,11,0.85) 100%);
+	background:
+		linear-gradient(180deg, rgba(10,10,11,0.65) 0%, rgba(10,10,11,0.15) 30%, rgba(10,10,11,0.55) 65%, rgba(10,10,11,0.95) 100%),
+		linear-gradient(90deg, rgba(10,10,11,0.5) 0%, transparent 60%);
 }
 :root[data-theme="light"] .tfg-hero__media::after {
-	background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 35%, rgba(255,255,255,0.85) 100%);
+	background:
+		linear-gradient(180deg, rgba(10,10,11,0.45) 0%, rgba(10,10,11,0.05) 30%, rgba(10,10,11,0.45) 65%, rgba(10,10,11,0.88) 100%),
+		linear-gradient(90deg, rgba(10,10,11,0.35) 0%, transparent 60%);
 }
 .tfg-hero__inner {
 	position: relative;
@@ -362,16 +395,17 @@
 	font-size: var(--fs-hero);
 	line-height: var(--lh-display);
 	letter-spacing: var(--tk-display);
-	color: #F5F5F3;
+	color: #FFFFFF;
 	max-width: 14ch;
+	font-weight: 500;
 }
-:root[data-theme="light"] .tfg-hero__title { color: var(--ink); }
 .tfg-hero__sub {
 	margin-top: 1.5rem;
 	font-size: var(--fs-body-l);
-	color: var(--silver-bright);
-	max-width: 50ch;
+	color: rgba(245, 245, 243, 0.85);
+	max-width: 52ch;
 	letter-spacing: 0.02em;
+	font-weight: 400;
 }
 .tfg-hero__actions { margin-top: 2.5rem; display: flex; flex-wrap: wrap; gap: 1rem; }
 .tfg-hero__scroll {
@@ -655,17 +689,28 @@
 	transition: color var(--dur) var(--ease);
 }
 .tfg-trust__item:hover { color: var(--ink); }
-.tfg-trust__name {
-	font-family: var(--font-display);
-	font-size: 1.5rem;
-	font-weight: 500;
-	letter-spacing: 0.02em;
-	filter: grayscale(1);
-	opacity: 0.6;
+.tfg-trust__logo {
+	max-width: 140px;
+	max-height: 56px;
+	width: auto; height: auto;
+	object-fit: contain;
+	filter: grayscale(1) brightness(0.85);
+	opacity: 0.55;
 	transition: opacity var(--dur) var(--ease), filter var(--dur) var(--ease);
 }
-.tfg-trust__item:hover .tfg-trust__name { opacity: 1; filter: grayscale(0); }
-.tfg-trust__desc { font-size: var(--fs-eyebrow); letter-spacing: var(--tk-eyebrow); text-transform: uppercase; opacity: 0.7; }
+:root[data-theme="light"] .tfg-trust__logo { filter: grayscale(1) brightness(0.3); }
+.tfg-trust__item:hover .tfg-trust__logo { opacity: 1; filter: grayscale(0) brightness(1); }
+.tfg-trust__name {
+	font-family: var(--font-body);
+	font-size: var(--fs-eyebrow);
+	font-weight: 600;
+	letter-spacing: var(--tk-eyebrow);
+	text-transform: uppercase;
+	opacity: 0.7;
+	transition: opacity var(--dur) var(--ease);
+}
+.tfg-trust__item:hover .tfg-trust__name { opacity: 1; }
+.tfg-trust__desc { font-size: 0.7rem; letter-spacing: 0.02em; text-transform: none; opacity: 0.55; font-family: var(--font-body); }
 
 /* =========================================================================
    10. STAT BLOCK

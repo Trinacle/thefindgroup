@@ -1,25 +1,13 @@
 ---
 # cPanel Git Version Control deployment manifest.
 #
-# This repo is checked out directly INTO the live theme folder:
-#   public_html/.../wp-content/themes/thefindgroup
-#
-# So the working tree IS the deployment target — no rsync/copy needed.
-# cPanel just needs this file to exist (and be valid YAML) to enable the
-# "Deploy HEAD Commit" button and to run post-deploy tasks.
+# This repo is checked out directly INTO the live theme folder, so the working
+# tree IS the deployment target — no copy step is needed. cPanel requires this
+# file to exist (and be valid YAML) to enable the "Deploy HEAD Commit" button.
 #
 # Reference: https://docs.cpanel.net/knowledge-base/web-services/git-deployment/
 
 deployment:
   tasks:
-    # No copy step required — the repo working tree lives in the theme dir.
-    #
-    # Post-deploy tasks run after `git pull`/checkout completes:
-
-    # Ensure uploaded assets are writable by WordPress (cache, logs, uploads).
-    # These no-op gracefully if the dirs don't exist yet.
-    - find $DEPLOYPATH -type d -name cache -exec chmod 755 {} \;
-    - find $DEPLOYPATH -type d -name logs -exec chmod 755 {} \;
-
-    # Touch a timestamp file so we can confirm the deploy landed from the browser.
-    - date -u "+%Y-%m-%dT%H:%M:%SZ" > $DEPLOYPATH/.deployed
+    # Write a deploy timestamp so we can confirm deploys landed.
+    - 'date -u "+%Y-%m-%dT%H:%M:%SZ" > $DEPLOYPATH/.deployed'

@@ -143,14 +143,11 @@ h4 { font-size: var(--fs-h4); font-family: var(--font-body); font-weight: 600; l
 /* ---- WP admin bar offset ---- */
 body.admin-bar { --header-h: calc(88px + 32px); }
 
-/* ---- Entrance animation utility (GSAP targets these) ---- */
-[data-reveal] { opacity: 0; transform: translateY(24px); }
-[data-reveal-img] { clip-path: inset(100% 0 0 0); }
-
-/* Reduced motion: show immediately */
-@media (prefers-reduced-motion: reduce) {
-	[data-reveal], [data-reveal-img] { opacity: 1; transform: none; clip-path: none; }
-}
+/* ---- Entrance animation utility ----
+   Scroll animations were removed by request. These elements are visible by
+   default now — the JS hook is a no-op. Kept for backwards compat. */
+[data-reveal] { opacity: 1; transform: none; }
+[data-reveal-img] { clip-path: none; }
 
 /* ---- Utility ---- */
 .text-center { text-align: center; }

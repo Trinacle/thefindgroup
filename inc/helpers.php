@@ -58,14 +58,14 @@ function tfg_stats() {
  */
 function tfg_associations() {
 	return array(
-		array( 'IYBA',     __( 'International Yacht Brokers Association', 'tfg' ) ),
-		array( 'MYBA',     __( 'The Worldwide Yachting Association', 'tfg' ) ),
-		array( 'NMMA',     __( 'National Marine Manufacturers Association', 'tfg' ) ),
-		array( 'YBAA',     __( 'Yacht Brokers Association of America', 'tfg' ) ),
-		array( 'MLS',      __( 'Realtor MLS', 'tfg' ) ),
-		array( 'Real',     __( 'Real Broker', 'tfg' ) ),
-		array( 'JUWAI',    __( 'Juwai', 'tfg' ) ),
-		array( 'YATCO',    __( 'Yacht & Charter', 'tfg' ) ),
+		array( 'IYBA',     __( 'International Yacht Brokers Association', 'tfg' ), 'iyba.png' ),
+		array( 'MYBA',     __( 'The Worldwide Yachting Association', 'tfg' ),      'myba.jpg' ),
+		array( 'NMMA',     __( 'National Marine Manufacturers Association', 'tfg' ), 'nmma.png' ),
+		array( 'YBAA',     __( 'Yacht Brokers Association of America', 'tfg' ),    'ybaa.png' ),
+		array( 'MLS',      __( 'Realtor MLS', 'tfg' ),                             'mls.jpg' ),
+		array( 'Real',     __( 'Real Broker', 'tfg' ),                             'real.jpg' ),
+		array( 'JUWAI',    __( 'Juwai', 'tfg' ),                                   'juwai.jpg' ),
+		array( 'YATCO',    __( 'YATCO', 'tfg' ),                                   'yatco.png' ),
 	);
 }
 

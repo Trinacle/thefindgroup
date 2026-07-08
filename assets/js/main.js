@@ -1,7 +1,8 @@
 /* =========================================================================
    TFG — Main JavaScript
-   Theme toggle · mega-menu · mobile nav · search · Lenis smooth scroll ·
-   GSAP scroll animations · custom cursor · magnetic hover · live chat FAB
+   Theme toggle · mega-menu · mobile nav · search · live chat FAB
+   (Smooth scroll + custom cursor + magnetic hover REMOVED by request —
+    they were causing scroll friction and felt janky.)
    ========================================================================= */
 
 (function () {
@@ -111,220 +112,43 @@
 	};
 
 	/* ----------------------------------------------------------------------
-	   5. SMOOTH SCROLL (Lenis)
+	   5. SMOOTH SCROLL — REMOVED by request (caused scroll friction)
+	   Native browser scrolling is used instead.
 	   ---------------------------------------------------------------------- */
 	const SmoothScroll = {
-		init() {
-			if (reduceMotion || typeof Lenis === "undefined") return;
-			this.lenis = new Lenis({
-				duration: 1.1,
-				easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-				smoothWheel: true,
-				smoothTouch: false,
-			});
-			const raf = (time) => {
-				this.lenis.raf(time);
-				requestAnimationFrame(raf);
-			};
-			requestAnimationFrame(raf);
-
-			// GSAP ScrollTrigger integration
-			if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
-				this.lenis.on("scroll", ScrollTrigger.update);
-				gsap.ticker.add((time) => this.lenis.raf(time * 1000));
-				gsap.ticker.lagSmoothing(0);
-			}
-
-			// Anchor links
-			document.querySelectorAll('a[href^="#"]').forEach((a) => {
-				a.addEventListener("click", (e) => {
-					const id = a.getAttribute("href");
-					if (id.length > 1) {
-						const target = document.querySelector(id);
-						if (target) {
-							e.preventDefault();
-							this.lenis.scrollTo(target, { offset: -88 });
-						}
-					}
-				});
-			});
-		},
+		init() { /* disabled */ },
 	};
 
 	/* ----------------------------------------------------------------------
-	   6. SCROLL ANIMATIONS (GSAP)
+	   6. REVEAL — show all elements immediately (scroll animations removed)
+	   The CSS sets [data-reveal] to opacity:0; this flips them visible right
+	   away so content is never stuck invisible.
 	   ---------------------------------------------------------------------- */
 	const Animations = {
 		init() {
-			if (reduceMotion || typeof gsap === "undefined") return;
-			if (typeof ScrollTrigger !== "undefined") gsap.registerPlugin(ScrollTrigger);
-
-			// Generic reveal
-			document.querySelectorAll("[data-reveal]").forEach((el) => {
-				gsap.to(el, {
-					opacity: 1,
-					y: 0,
-					duration: 0.9,
-					ease: "power3.out",
-					scrollTrigger: { trigger: el, start: "top 88%" },
-				});
+			document.querySelectorAll("[data-reveal], [data-reveal-stagger], [data-reveal-img], [data-hero-anim], [data-split-lines]").forEach((el) => {
+				el.style.opacity = "1";
+				el.style.transform = "none";
+				el.style.clipPath = "none";
 			});
-
-			// Staggered groups
-			document.querySelectorAll("[data-reveal-stagger]").forEach((group) => {
-				const items = group.children;
-				gsap.to(items, {
-					opacity: 1,
-					y: 0,
-					duration: 0.8,
-					ease: "power3.out",
-					stagger: 0.1,
-					scrollTrigger: { trigger: group, start: "top 85%" },
-				});
-			});
-
-			// Image clip-path reveal
-			document.querySelectorAll("[data-reveal-img]").forEach((el) => {
-				gsap.to(el, {
-					clipPath: "inset(0% 0 0 0)",
-					duration: 1.2,
-					ease: "power4.out",
-					scrollTrigger: { trigger: el, start: "top 90%" },
-				});
-			});
-
-			// Hero entrance (immediate)
-			const hero = document.querySelector(".tfg-hero");
-			if (hero) {
-				const els = hero.querySelectorAll("[data-hero-anim]");
-				if (els.length) {
-					gsap.from(els, {
-						opacity: 0,
-						y: 30,
-						duration: 1.1,
-						ease: "power3.out",
-						stagger: 0.15,
-						delay: 0.2,
-					});
-				}
-			}
-
-			// Headline line-split reveal (lightweight, no SplitText dependency)
-			document.querySelectorAll("[data-split-lines]").forEach((el) => {
-				this.splitLines(el).forEach((line, i) => {
-					gsap.from(line, {
-						opacity: 0,
-						y: 24,
-						duration: 0.9,
-						ease: "power3.out",
-						delay: i * 0.1,
-						scrollTrigger: { trigger: el, start: "top 85%" },
-					});
-				});
-			});
-		},
-
-		// Naive line-wrap splitter: wraps each line by measuring word positions.
-		splitLines(el) {
-			const text = el.textContent;
-			const words = text.split(/\s+/);
-			el.innerHTML = "";
-			const wordEls = words.map((w) => {
-				const span = document.createElement("span");
-				span.style.display = "inline-block";
-				span.textContent = w + " ";
-				el.appendChild(span);
-				return span;
-			});
-			const lines = [];
-			let currentLine = [];
-			let lastTop = null;
-			wordEls.forEach((w) => {
-				const top = w.getBoundingClientRect().top;
-				if (lastTop === null || Math.abs(top - lastTop) < 2) {
-					currentLine.push(w);
-				} else {
-					lines.push(currentLine);
-					currentLine = [w];
-				}
-				lastTop = top;
-			});
-			if (currentLine.length) lines.push(currentLine);
-			// Wrap each line's words in a container span for animation.
-			const lineEls = lines.map((line) => {
-				const wrap = document.createElement("span");
-				wrap.style.display = "block";
-				wrap.style.overflow = "hidden";
-				line.forEach((w) => {
-					w.style.display = "inline-block";
-					wrap.appendChild(w);
-				});
-				el.appendChild(wrap);
-				return wrap;
-			});
-			return lineEls;
 		},
 	};
 
 	/* ----------------------------------------------------------------------
-	   7. CUSTOM CURSOR (desktop only)
+	   7. CUSTOM CURSOR — REMOVED by request (felt janky)
 	   ---------------------------------------------------------------------- */
 	const Cursor = {
 		init() {
-			if (isTouch || reduceMotion) return;
-			this.dot = document.querySelector(".tfg-cursor");
-			this.ring = document.querySelector(".tfg-cursor-ring");
-			if (!this.dot || !this.ring) return;
-			this.mouse = { x: 0, y: 0 };
-			this.ringPos = { x: 0, y: 0 };
-
-			window.addEventListener("mousemove", (e) => {
-				this.mouse.x = e.clientX;
-				this.mouse.y = e.clientY;
-				this.dot.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
-			});
-
-			const lerp = (a, b, n) => (1 - n) * a + n * b;
-			const render = () => {
-				this.ringPos.x = lerp(this.ringPos.x, this.mouse.x, 0.18);
-				this.ringPos.y = lerp(this.ringPos.y, this.mouse.y, 0.18);
-				this.ring.style.transform = `translate(${this.ringPos.x}px, ${this.ringPos.y}px) translate(-50%, -50%)`;
-				requestAnimationFrame(render);
-			};
-			render();
-
-			// Hover state on interactive elements
-			document.querySelectorAll("a, button, [data-magnetic], input, textarea, select").forEach((el) => {
-				el.addEventListener("mouseenter", () => {
-					this.dot.classList.add("is-hover");
-					this.ring.classList.add("is-hover");
-				});
-				el.addEventListener("mouseleave", () => {
-					this.dot.classList.remove("is-hover");
-					this.ring.classList.remove("is-hover");
-				});
-			});
+			// Hide any cursor elements from the DOM
+			document.querySelectorAll(".tfg-cursor, .tfg-cursor-ring").forEach((el) => el.remove());
 		},
 	};
 
 	/* ----------------------------------------------------------------------
-	   8. MAGNETIC HOVER (desktop only)
+	   8. MAGNETIC HOVER — REMOVED by request
 	   ---------------------------------------------------------------------- */
 	const Magnetic = {
-		init() {
-			if (isTouch || reduceMotion) return;
-			document.querySelectorAll("[data-magnetic]").forEach((el) => {
-				el.addEventListener("mousemove", (e) => {
-					const rect = el.getBoundingClientRect();
-					const x = e.clientX - rect.left - rect.width / 2;
-					const y = e.clientY - rect.top - rect.height / 2;
-					el.style.transform = `translate(${x * 0.12}px, ${y * 0.12}px)`;
-				});
-				el.addEventListener("mouseleave", () => {
-					el.style.transform = "";
-				});
-			});
-		},
+		init() { /* disabled */ },
 	};
 
 	/* ----------------------------------------------------------------------

@@ -62,17 +62,8 @@ add_action( 'wp_enqueue_scripts', 'tfg_styles' );
 function tfg_scripts() {
 	$ver = TFG_VERSION;
 
-	// GSAP core + ScrollTrigger (CDN, deferred).
-	wp_enqueue_script( 'gsap', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js', array(), $ver, true );
-	wp_enqueue_script( 'gsap-scrolltrigger', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js', array( 'gsap' ), $ver, true );
-
-	// Lenis smooth scroll.
-	wp_enqueue_script( 'lenis', 'https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js', array(), $ver, true );
-
-	// SplitText is a GSAP bonus plugin; use the public-splitText fallback (class-based) in main.js.
-	// Our main script splits via a small inline helper rather than the paid SplitText.
-
-	wp_enqueue_script( 'tfg-main', TFG_URI . '/assets/js/main.js', array( 'gsap', 'lenis' ), $ver, true );
+	// Main theme script (vanilla JS — GSAP/Lenis removed by request).
+	wp_enqueue_script( 'tfg-main', TFG_URI . '/assets/js/main.js', array(), $ver, true );
 
 	// Pass server-side data to JS.
 	wp_localize_script(

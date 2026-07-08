@@ -19,10 +19,6 @@
 
 <a class="skip-link sr-only" href="#main"><?php esc_html_e( 'Skip to content', 'tfg' ); ?></a>
 
-<!-- Custom cursor (desktop only) -->
-<div class="tfg-cursor" aria-hidden="true"></div>
-<div class="tfg-cursor-ring" aria-hidden="true"></div>
-
 <header class="tfg-header" id="masthead">
 	<div class="tfg-header__inner">
 
