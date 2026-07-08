@@ -1,0 +1,47 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 2,
+	"settings": {
+		"appearanceTools": true,
+		"layout": {
+			"contentSize": "860px",
+			"wideSize": "1440px"
+		},
+		"color": {
+			"palette": [
+				{ "slug": "bg", "color": "#0A0A0B", "name": "Obsidian" },
+				{ "slug": "surface", "color": "#141416", "name": "Graphite" },
+				{ "slug": "ink", "color": "#F5F5F3", "name": "Ivory" },
+				{ "slug": "ink-soft", "color": "#B8B8BC", "name": "Silver Soft" },
+				{ "slug": "ink-mute", "color": "#7A7A80", "name": "Silver Mute" },
+				{ "slug": "silver", "color": "#A8A8AE", "name": "Silver" },
+				{ "slug": "silver-bright", "color": "#D4D4D8", "name": "Silver Bright" }
+			]
+		},
+		"typography": {
+			"fontFamilies": [
+				{
+					"fontFamily": "\"Cormorant Garamond\", Georgia, serif",
+					"slug": "display",
+					"name": "Cormorant Garamond"
+				},
+				{
+					"fontFamily": "\"Inter\", -apple-system, BlinkMacSystemFont, sans-serif",
+					"slug": "body",
+					"name": "Inter"
+				}
+			]
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "#0A0A0B",
+			"text": "#F5F5F3"
+		},
+		"typography": {
+			"fontFamily": "\"Inter\", -apple-system, BlinkMacSystemFont, sans-serif",
+			"fontSize": "1rem",
+			"lineHeight": "1.65"
+		}
+	}
+}
