@@ -5,7 +5,7 @@
  * @package TFG
  */
 ?>
-<section class="tfg-trust" id="associations">
+<section class="tfg-trust band--light" id="associations">
 	<div class="container">
 		<div class="text-center" style="margin-bottom:2.5rem;">
 			<span class="eyebrow eyebrow--bare" style="justify-content:center;"><?php esc_html_e( 'Associations We Belong To', 'tfg' ); ?></span>

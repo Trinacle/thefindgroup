@@ -5,7 +5,7 @@
  * @package TFG
  */
 ?>
-<section class="section band--surface" id="why-sell">
+<section class="section band--light" id="why-sell">
 	<div class="container">
 		<div class="section__head text-center" data-reveal style="justify-items:center;">
 			<span class="eyebrow eyebrow--bare" style="justify-content:center;"><?php esc_html_e( '04 — Why Sell With Us', 'tfg' ); ?></span>

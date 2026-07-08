@@ -453,6 +453,11 @@
 /* =========================================================================
    SECTION BANDS — alternating dark/light surfaces
    ========================================================================= */
+/* Section bands — alternating for visual rhythm.
+   .band--dark   = black-on-black (obsidian, the dramatic sections)
+   .band--light  = white-on-black (raised platinum/graphite surface) */
+.band--dark { background: #0A0A0B; }
+.band--light { background: var(--surface); }
 .band--surface { background: var(--surface); }
 .band--surface-2 { background: var(--surface-2); }
 .band--border-top { border-top: 1px solid var(--line); }

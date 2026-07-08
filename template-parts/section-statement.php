@@ -5,7 +5,7 @@
  * @package TFG
  */
 ?>
-<section class="section" id="statement">
+<section class="section band--dark" id="statement">
 	<div class="container">
 		<div class="tfg-split">
 			<div class="tfg-split__media" data-reveal-img>

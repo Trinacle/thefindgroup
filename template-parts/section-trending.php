@@ -12,7 +12,7 @@ if ( ! $listings ) {
 	return;
 }
 ?>
-<section class="section band--surface" id="trending">
+<section class="section band--light" id="trending">
 	<div class="container">
 		<div class="section__head" data-reveal style="display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;">
 			<div>

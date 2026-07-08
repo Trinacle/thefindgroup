@@ -5,7 +5,7 @@
  * @package TFG
  */
 ?>
-<section class="section--sm" id="stats">
+<section class="section--sm band--dark" id="stats">
 	<div class="container">
 		<div class="tfg-stats" data-reveal-stagger>
 			<?php foreach ( tfg_stats() as $stat ) : ?>

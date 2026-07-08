@@ -14,7 +14,7 @@ $hero  = $cats[0];
 $sides = array_slice( $cats, 1 );
 ?>
 
-<section class="section band--border-bottom" id="categories">
+<section class="section band--dark band--border-bottom" id="categories">
 	<div class="container">
 
 		<div class="section__head" style="display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;">

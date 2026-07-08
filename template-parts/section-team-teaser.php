@@ -8,7 +8,7 @@ $team = tfg_team();
 $leaders = array_slice( $team, 0, 2 );
 if ( ! $leaders ) return;
 ?>
-<section class="section" id="team">
+<section class="section band--dark" id="team">
 	<div class="container">
 		<div class="section__head" data-reveal>
 			<span class="eyebrow"><?php esc_html_e( '05 — The Specialists', 'tfg' ); ?></span>

@@ -39,15 +39,9 @@
 		init() {
 			this.el = document.querySelector(".tfg-header");
 			if (!this.el) return;
-			this.onScroll = this.onScroll.bind(this);
-			window.addEventListener("scroll", this.onScroll, { passive: true });
-			this.onScroll();
-		},
-		onScroll() {
-			if (window.scrollY > 24) this.el.classList.add("is-scrolled");
-			else this.el.classList.remove("is-scrolled");
-		},
-	};
+			// Header is now solid (not an overlay) — no scroll-state class needed.
+			// Left as a no-op for backwards compatibility.
+		};
 
 	/* ----------------------------------------------------------------------
 	   3. MOBILE MENU

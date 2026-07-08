@@ -91,8 +91,7 @@
 /* =========================================================================
    2. HEADER
    ========================================================================= */
-/* HEADER — always dark (obsidian) even in light mode, per design request.
-   Header text/links use ivory for contrast against the permanent dark bar. */
+/* HEADER — solid (not overlay), always dark obsidian. Content sits BELOW it. */
 .tfg-header {
 	position: fixed;
 	top: 0; left: 0; right: 0;
@@ -100,17 +99,16 @@
 	height: var(--header-h);
 	display: flex;
 	align-items: center;
-	background: rgba(10, 10, 11, 0.92);
-	-webkit-backdrop-filter: saturate(160%) blur(20px);
-	backdrop-filter: saturate(160%) blur(20px);
+	background: #0A0A0B;          /* SOLID — no transparency, no blur */
 	border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-	transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 	color: #F5F5F3;
 }
-.tfg-header.is-scrolled {
-	background: rgba(10, 10, 11, 0.98);
-	border-bottom-color: rgba(255, 255, 255, 0.22);
-}
+/* Push ALL page content below the solid header (no overlay behavior). */
+body { padding-top: var(--header-h); }
+/* Hero no longer needs to sit behind the header — reset its top spacing. */
+.tfg-hero,
+.tfg-hero--slim { min-height: auto; padding-block: clamp(4rem, 10vh, 7rem); }
+.tfg-hero { min-height: clamp(520px, 78vh, 760px); }
 /* Force header text to ivory regardless of light/dark mode */
 .tfg-header,
 .tfg-header a,
@@ -672,33 +670,43 @@
 .tfg-trust {
 	border-top: 1px solid var(--line);
 	border-bottom: 1px solid var(--line);
-	padding: clamp(2rem, 5vh, 3.5rem) 0;
+	padding: clamp(3rem, 6vh, 4.5rem) 0;
 }
 .tfg-trust__grid {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	justify-content: center;
-	gap: clamp(2rem, 5vw, 4rem);
+	display: grid;
+	grid-template-columns: repeat(8, 1fr);
+	gap: clamp(1rem, 2vw, 1.5rem);
 }
+@media (max-width: 1080px) { .tfg-trust__grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 560px)  { .tfg-trust__grid { grid-template-columns: repeat(2, 1fr); } }
 .tfg-trust__item {
-	display: flex; flex-direction: column; align-items: center;
-	gap: 0.5rem;
-	color: var(--ink-mute);
+	display: flex; flex-direction: column; align-items: center; justify-content: center;
+	gap: 0.65rem;
+	padding: clamp(1rem, 2vw, 1.5rem) 0.5rem;
 	text-align: center;
-	transition: color var(--dur) var(--ease);
+	border: 1px solid var(--line-soft);
+	background: var(--surface);
+	transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+	min-height: 130px;
 }
-.tfg-trust__item:hover { color: var(--ink); }
+.tfg-trust__item:hover {
+	border-color: var(--silver);
+	background: var(--surface-2);
+}
 .tfg-trust__logo {
-	max-width: 140px;
-	max-height: 56px;
-	width: auto; height: auto;
+	max-width: 120px;
+	max-height: 48px;
+	width: auto; height: 48px;
 	object-fit: contain;
-	filter: grayscale(1) brightness(0.85);
-	opacity: 0.55;
+	/* Invert light-on-transparent logos so they read as ivory on dark bg. */
+	filter: grayscale(1) brightness(1.4) invert(1);
+	opacity: 0.85;
 	transition: opacity var(--dur) var(--ease), filter var(--dur) var(--ease);
 }
+/* In light mode, logos should be dark — invert back. */
 :root[data-theme="light"] .tfg-trust__logo { filter: grayscale(1) brightness(0.3); }
+.tfg-trust__item:hover .tfg-trust__logo { opacity: 1; filter: grayscale(0) brightness(1.4) invert(1); }
+:root[data-theme="light"] .tfg-trust__item:hover .tfg-trust__logo { filter: grayscale(0) brightness(0.5); }
 .tfg-trust__item:hover .tfg-trust__logo { opacity: 1; filter: grayscale(0) brightness(1); }
 .tfg-trust__name {
 	font-family: var(--font-body);

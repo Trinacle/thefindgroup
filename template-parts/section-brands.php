@@ -5,7 +5,7 @@
  * @package TFG
  */
 ?>
-<section class="section--sm band--border-top band--border-bottom" id="brands">
+<section class="section--sm band--light band--border-top band--border-bottom" id="brands">
 	<div class="container">
 		<div class="text-center" style="margin-bottom:2rem;" data-reveal>
 			<span class="eyebrow eyebrow--bare" style="justify-content:center;"><?php esc_html_e( 'Authorized Dealer for Prestigious Brands', 'tfg' ); ?></span>
