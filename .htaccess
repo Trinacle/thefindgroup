@@ -1,3 +1,0 @@
-# Intentionally empty — testing whether any .htaccess directive causes 500.
-# If the folder stops 500ing with this empty file, we know the problem is
-# a disallowed Apache directive (likely Options or Require on this host).
