@@ -1,0 +1,222 @@
+/* =========================================================================
+   TFG — Cinema System
+   Scroll-snap scenes · IntersectionObserver reveals · count-up · parallax
+   Lightweight vanilla engine — no GSAP, no Lenis, zero scroll hijacking.
+   ========================================================================= */
+
+/* =========================================================================
+   1. SCROLL-SNAP SCENES (the homepage spine)
+   ========================================================================= */
+.tfg-cinema {
+	/* proximity = gentle snapping, respects user scroll (not mandatory) */
+	scroll-snap-type: y proximity;
+}
+.cinema-scene {
+	min-height: 90vh;
+	min-height: 90svh;
+	scroll-snap-align: start;
+	scroll-snap-stop: normal;
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+/* The hero gets a full 100vh lock */
+.cinema-scene--hero {
+	min-height: 100vh;
+	min-height: 100svh;
+}
+/* Shorter scenes for non-hero bands */
+.cinema-scene--sm {
+	min-height: auto;
+	scroll-snap-align: none;
+}
+
+/* =========================================================================
+   2. REVEAL STATES — elements start hidden, become visible via JS observer
+   All gated behind prefers-reduced-motion: no-preference
+   ========================================================================= */
+
+/* Default (hidden) state — only applied when motion is allowed */
+@media (prefers-reduced-motion: no-preference) {
+	[data-reveal] {
+		opacity: 0;
+		transform: translateY(28px);
+		transition: opacity 900ms var(--ease), transform 900ms var(--ease);
+		transition-delay: var(--reveal-delay, 0ms);
+		will-change: opacity, transform;
+	}
+	[data-reveal-stagger] > * {
+		opacity: 0;
+		transform: translateY(24px);
+		transition: opacity 800ms var(--ease), transform 800ms var(--ease);
+		will-change: opacity, transform;
+	}
+	[data-reveal-img] {
+		clip-path: inset(100% 0 0 0);
+		transition: clip-path 1100ms var(--ease-out);
+		will-change: clip-path;
+	}
+	[data-reveal-left] {
+		opacity: 0;
+		transform: translateX(-32px);
+		transition: opacity 900ms var(--ease), transform 900ms var(--ease);
+	}
+	[data-reveal-right] {
+		opacity: 0;
+		transform: translateX(32px);
+		transition: opacity 900ms var(--ease), transform 900ms var(--ease);
+	}
+	[data-reveal-scale] {
+		opacity: 0;
+		transform: scale(0.96);
+		transition: opacity 900ms var(--ease), transform 1100ms var(--ease-out);
+	}
+}
+
+/* Visible state — JS observer adds .is-visible */
+[data-reveal].is-visible,
+[data-reveal-left].is-visible,
+[data-reveal-right].is-visible,
+[data-reveal-scale].is-visible {
+	opacity: 1;
+	transform: none;
+}
+[data-reveal-stagger].is-visible > * {
+	opacity: 1;
+	transform: none;
+}
+[data-reveal-stagger].is-visible > *:nth-child(1) { transition-delay: 80ms; }
+[data-reveal-stagger].is-visible > *:nth-child(2) { transition-delay: 180ms; }
+[data-reveal-stagger].is-visible > *:nth-child(3) { transition-delay: 280ms; }
+[data-reveal-stagger].is-visible > *:nth-child(4) { transition-delay: 380ms; }
+[data-reveal-stagger].is-visible > *:nth-child(5) { transition-delay: 480ms; }
+[data-reveal-stagger].is-visible > *:nth-child(6) { transition-delay: 580ms; }
+[data-reveal-stagger].is-visible > *:nth-child(7) { transition-delay: 680ms; }
+[data-reveal-stagger].is-visible > *:nth-child(8) { transition-delay: 780ms; }
+
+[data-reveal-img].is-visible {
+	clip-path: inset(0 0 0 0);
+}
+
+/* Reduced-motion: everything visible immediately, no transitions */
+@media (prefers-reduced-motion: reduce) {
+	[data-reveal],
+	[data-reveal-stagger] > *,
+	[data-reveal-left],
+	[data-reveal-right],
+	[data-reveal-scale],
+	[data-reveal-img] {
+		opacity: 1 !important;
+		transform: none !important;
+		clip-path: none !important;
+	}
+}
+
+/* =========================================================================
+   3. COUNT-UP STATS
+   ========================================================================= */
+[data-countup] {
+	font-variant-numeric: tabular-nums;
+}
+/* The element shows a "0" until the observer fires, then counts up */
+@media (prefers-reduced-motion: no-preference) {
+	[data-countup]:not(.is-counted) {
+		opacity: 0.4;
+	}
+}
+
+/* =========================================================================
+   4. PARALLAX DEPTH — subtle translateY on media as it scrolls past
+   Applied via JS observer that updates a --parallax custom property.
+   ========================================================================= */
+[data-parallax] {
+	will-change: transform;
+	transform: translateY(var(--parallax, 0px));
+	transition: transform 100ms linear;
+}
+@media (prefers-reduced-motion: reduce) {
+	[data-parallax] {
+		transform: none !important;
+		transition: none !important;
+	}
+}
+
+/* =========================================================================
+   5. HERO KINETIC LINE — letter/word masking reveal
+   Words start translated below a mask, rise into place on load.
+   ========================================================================= */
+@media (prefers-reduced-motion: no-preference) {
+	.tfg-kinetic {
+		overflow: hidden;
+		display: block;
+	}
+	.tfg-kinetic__inner {
+		display: block;
+		transform: translateY(110%);
+		animation: kineticRise 1.4s var(--ease-out) forwards;
+		animation-delay: var(--kinetic-delay, 200ms);
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.tfg-kinetic__inner {
+		transform: none;
+		animation: none;
+	}
+}
+@keyframes kineticRise {
+	from { transform: translateY(110%); }
+	to { transform: translateY(0); }
+}
+
+/* =========================================================================
+   6. SCROLL PROGRESS INDICATOR (thin top bar)
+   ========================================================================= */
+.tfg-scroll-progress {
+	position: fixed;
+	top: var(--header-h);
+	left: 0;
+	width: 0%;
+	height: 2px;
+	background: var(--silver-bright);
+	z-index: 99;
+	transition: width 80ms linear;
+	pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+	.tfg-scroll-progress { display: none; }
+}
+
+/* =========================================================================
+   7. SCENE DOTS (right-side navigation pips for scenes)
+   ========================================================================= */
+.tfg-scene-dots {
+	position: fixed;
+	right: 1.5rem;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 50;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+.tfg-scene-dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	border: 1px solid var(--silver);
+	background: transparent;
+	padding: 0;
+	cursor: pointer;
+	transition: all var(--dur-fast) var(--ease);
+}
+.tfg-scene-dot.is-active {
+	background: var(--silver-bright);
+	border-color: var(--silver-bright);
+	transform: scale(1.3);
+}
+.tfg-scene-dot:hover {
+	border-color: var(--silver-bright);
+}
+@media (max-width: 760px) {
+	.tfg-scene-dots { display: none; }
+}

@@ -1,7 +1,7 @@
 <?php
 /**
- * Front page — cinematic hero + alternating bands.
- * Composed of template-parts for maintainability.
+ * Front page — Scroll-Cinema.
+ * A sequence of full-screen scenes that snap into place as you scroll.
  *
  * @package TFG
  */
@@ -9,56 +9,68 @@
 get_header();
 ?>
 
-<!-- 1. HERO -->
-<section class="tfg-hero">
-	<div class="tfg-hero__media">
-		<?php
-		// Use the homepage featured image or a default cinematic image.
-		if ( has_post_thumbnail( get_the_ID() ) ) {
-			echo get_the_post_thumbnail( get_the_ID(), 'tfg-hero', array( 'class' => '', 'loading' => 'eager', 'fetchpriority' => 'high' ) );
-		} else {
-			echo '<img src="' . esc_url( TFG_URI . '/assets/img/hero-yacht-bahamas.jpg' ) . '" alt="' . esc_attr__( 'Luxury yacht at dusk', 'tfg' ) . '" loading="eager" fetchpriority="high">';
-		}
-		?>
-	</div>
-	<div class="tfg-hero__inner">
-		<div class="eyebrow tfg-hero__eyebrow" data-hero-anim><?php esc_html_e( 'Est. 1985 — Luxury Asset Brokerage', 'tfg' ); ?></div>
-		<h1 class="tfg-hero__title" data-hero-anim><?php echo esc_html( tfg_opt( 'tfg_tagline', __( 'Selling Luxury Assets Since 1985', 'tfg' ) ) ); ?></h1>
-		<p class="tfg-hero__sub" data-hero-anim><?php esc_html_e( 'Yachts, Real Estate, Aircraft & Armored Luxury Vehicles — privately connecting buyers and sellers across six continents.', 'tfg' ); ?></p>
-		<div class="tfg-hero__actions" data-hero-anim>
-			<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="tfg-btn tfg-btn--inverse" data-magnetic><?php esc_html_e( 'Explore the Collection', 'tfg' ); ?> <span aria-hidden="true">→</span></a>
-			<a href="<?php echo esc_url( home_url( '/sell-with-us/' ) ); ?>" class="tfg-text-link" style="color:var(--silver-bright)"><?php esc_html_e( 'Sell With Us', 'tfg' ); ?> <span aria-hidden="true">→</span></a>
-		</div>
-	</div>
-	<div class="tfg-hero__scroll" aria-hidden="true"><?php esc_html_e( 'Scroll', 'tfg' ); ?></div>
-</section>
+<!-- Scroll progress bar -->
+<div class="tfg-scroll-progress" aria-hidden="true"></div>
 
-<!-- 2. FEATURED CATEGORIES -->
-<?php get_template_part( 'template-parts/section', 'categories' ); ?>
+<!-- Scene navigation dots (desktop) -->
+<nav class="tfg-scene-dots" aria-label="<?php esc_attr_e( 'Scene navigation', 'tfg' ); ?>">
+	<button class="tfg-scene-dot is-active" data-scene-target="hero" aria-label="<?php esc_attr_e( 'Hero', 'tfg' ); ?>"></button>
+	<button class="tfg-scene-dot" data-scene-target="collection" aria-label="<?php esc_attr_e( 'Collection', 'tfg' ); ?>"></button>
+	<button class="tfg-scene-dot" data-scene-target="trending" aria-label="<?php esc_attr_e( 'Trending', 'tfg' ); ?>"></button>
+	<button class="tfg-scene-dot" data-scene-target="statement" aria-label="<?php esc_attr_e( 'Statement', 'tfg' ); ?>"></button>
+	<button class="tfg-scene-dot" data-scene-target="numbers" aria-label="<?php esc_attr_e( 'Numbers', 'tfg' ); ?>"></button>
+	<button class="tfg-scene-dot" data-scene-target="why" aria-label="<?php esc_attr_e( 'Why Sell', 'tfg' ); ?>"></button>
+	<button class="tfg-scene-dot" data-scene-target="closing" aria-label="<?php esc_attr_e( 'Contact', 'tfg' ); ?>"></button>
+</nav>
 
-<!-- 3. TRENDING LISTINGS -->
-<?php get_template_part( 'template-parts/section', 'trending' ); ?>
+<main class="tfg-cinema">
 
-<!-- 4. BRAND STATEMENT (editorial split) -->
-<?php get_template_part( 'template-parts/section', 'statement' ); ?>
+	<!-- SCENE 1: HERO -->
+	<section class="cinema-scene cinema-scene--hero" data-scene="hero">
+		<?php get_template_part( 'template-parts/scene', 'hero' ); ?>
+	</section>
 
-<!-- 5. AUTHORIZED DEALER STRIP -->
-<?php get_template_part( 'template-parts/section', 'brands' ); ?>
+	<!-- SCENE 2: THE COLLECTION -->
+	<section class="cinema-scene" data-scene="collection" id="collection">
+		<?php get_template_part( 'template-parts/scene', 'categories' ); ?>
+	</section>
 
-<!-- 6. STATS -->
-<?php get_template_part( 'template-parts/section', 'stats' ); ?>
+	<!-- SCENE 3: TRENDING -->
+	<section class="cinema-scene" data-scene="trending" id="trending">
+		<?php get_template_part( 'template-parts/scene', 'trending' ); ?>
+	</section>
 
-<!-- 7. WHY SELL (magazine spread) -->
-<?php get_template_part( 'template-parts/section', 'why-sell' ); ?>
+	<!-- SCENE 4: THE STATEMENT -->
+	<section class="cinema-scene" data-scene="statement" id="statement">
+		<?php get_template_part( 'template-parts/scene', 'statement' ); ?>
+	</section>
 
-<!-- 8. TEAM TEASER (diptych) -->
-<?php get_template_part( 'template-parts/section', 'team-teaser' ); ?>
+	<!-- SCENE 5: THE NUMBERS -->
+	<section class="cinema-scene" data-scene="numbers" id="numbers">
+		<?php get_template_part( 'template-parts/scene', 'stats' ); ?>
+	</section>
 
-<!-- 9. ASSOCIATIONS -->
-<?php get_template_part( 'template-parts/section', 'associations' ); ?>
+	<!-- SCENE 6: WHY SELL -->
+	<section class="cinema-scene" data-scene="why" id="why">
+		<?php get_template_part( 'template-parts/scene', 'why-sell' ); ?>
+	</section>
 
-<!-- 10. CLOSING CTA -->
-<?php get_template_part( 'template-parts/section', 'closing-cta' ); ?>
+	<!-- SCENE 7: THE TEAM -->
+	<section class="cinema-scene" data-scene="team" id="team">
+		<?php get_template_part( 'template-parts/scene', 'team-teaser' ); ?>
+	</section>
+
+	<!-- SCENE 8: ASSOCIATIONS -->
+	<section class="cinema-scene cinema-scene--sm" id="associations">
+		<?php get_template_part( 'template-parts/scene', 'associations' ); ?>
+	</section>
+
+	<!-- SCENE 9: CLOSING CTA -->
+	<section class="cinema-scene cinema-scene--hero" data-scene="closing" id="closing">
+		<?php get_template_part( 'template-parts/scene', 'closing-cta' ); ?>
+	</section>
+
+</main>
 
 <?php
 get_footer();

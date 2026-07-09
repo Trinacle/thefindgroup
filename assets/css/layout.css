@@ -1,13 +1,17 @@
 /* =========================================================================
-   TFG — Layouts & Pages
-   Home sections, inner-page compositions, editorial splits, magazine
-   spreads, catalog, contact, about, etc. Per the design: each page uses a
-   different composition so the site feels curated, not templated.
+   TFG — Layouts & Scenes (Cinema Redesign)
+   Full-bleed compositions for home scenes + inner pages.
+   Each scene fills the viewport — no contained card grids.
    ========================================================================= */
 
+/* Section bands — alternating for visual rhythm */
+.band--dark { background: #0A0A0B; }
+.band--light { background: var(--surface); }
+.band--border-top { border-top: 1px solid var(--line); }
+.band--border-bottom { border-bottom: 1px solid var(--line); }
+
 /* =========================================================================
-   HOME — Section 2: Featured Categories — full-bleed edge-to-edge bento.
-   Breaks out of the container to fill the viewport width.
+   HOME — Scene 2: THE COLLECTION (full-bleed bento, edge-to-edge)
    ========================================================================= */
 .tfg-cats-feature {
 	display: grid;
@@ -17,28 +21,17 @@
 	background: rgba(255,255,255,0.06);
 	width: 100vw;
 	margin-left: calc(50% - 50vw);
-	height: clamp(480px, 72vh, 720px);
+	height: clamp(520px, 78vh, 800px);
 }
-/* Hero card spans 2 rows in the first column */
-.tfg-cat-feature {
-	grid-row: 1 / span 2;
-	grid-column: 1;
-}
-/* Side cards fill columns 2 & 3 */
-.tfg-cats-side {
-	display: contents;
-}
+.tfg-cat-feature { grid-row: 1 / span 2; grid-column: 1; min-height: 100%; }
+.tfg-cats-side { display: contents; }
 .tfg-cats-side .tfg-cat-card:nth-child(1) { grid-row: 1; grid-column: 2; }
 .tfg-cats-side .tfg-cat-card:nth-child(2) { grid-row: 1; grid-column: 3; }
 .tfg-cats-side .tfg-cat-card:nth-child(3) { grid-row: 2; grid-column: 2 / span 2; }
 
 @media (max-width: 900px) {
-	.tfg-cats-feature {
-		grid-template-columns: 1fr 1fr;
-		grid-template-rows: 1fr 1fr 1fr;
-		height: auto;
-	}
-	.tfg-cat-feature { grid-row: 1; grid-column: 1 / span 2; min-height: 340px; }
+	.tfg-cats-feature { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; height: auto; }
+	.tfg-cat-feature { grid-row: 1; grid-column: 1 / span 2; min-height: 360px; }
 	.tfg-cats-side .tfg-cat-card:nth-child(1) { grid-row: 2; grid-column: 1; min-height: 240px; }
 	.tfg-cats-side .tfg-cat-card:nth-child(2) { grid-row: 2; grid-column: 2; min-height: 240px; }
 	.tfg-cats-side .tfg-cat-card:nth-child(3) { grid-row: 3; grid-column: 1 / span 2; min-height: 240px; }
@@ -48,137 +41,15 @@
 	.tfg-cat-feature,
 	.tfg-cats-side .tfg-cat-card:nth-child(1),
 	.tfg-cats-side .tfg-cat-card:nth-child(2),
-	.tfg-cats-side .tfg-cat-card:nth-child(3) {
-		grid-column: 1; min-height: 260px;
-	}
+	.tfg-cats-side .tfg-cat-card:nth-child(3) { grid-column: 1; min-height: 260px; }
 	.tfg-cat-feature { grid-row: 1; }
 	.tfg-cats-side .tfg-cat-card:nth-child(1) { grid-row: 2; }
 	.tfg-cats-side .tfg-cat-card:nth-child(2) { grid-row: 3; }
 	.tfg-cats-side .tfg-cat-card:nth-child(3) { grid-row: 4; }
 }
 
-.tfg-cat-feature {
-	position: relative;
-	display: block;
-	overflow: hidden;
-	background: var(--surface-2);
-	min-height: clamp(420px, 60vh, 640px);
-}
-.tfg-cat-feature__img {
-	position: absolute; inset: 0;
-	width: 100%; height: 100%;
-	object-fit: cover;
-	transition: transform var(--dur-slow) var(--ease);
-}
-.tfg-cat-feature:hover .tfg-cat-feature__img { transform: scale(1.05); }
-.tfg-cat-feature__overlay {
-	position: absolute; inset: 0;
-	background: linear-gradient(180deg, rgba(10,10,11,0.1) 30%, rgba(10,10,11,0.88) 100%);
-	z-index: 1;
-}
-.tfg-cat-feature__arrow {
-	position: absolute; top: 1.5rem; right: 1.5rem; z-index: 3;
-	color: #F5F5F3; font-size: 1.4rem;
-	opacity: 0; transform: translateY(-6px);
-	transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
-}
-.tfg-cat-feature:hover .tfg-cat-feature__arrow { opacity: 1; transform: translateY(0); }
-.tfg-cat-feature__label {
-	position: absolute; left: 2rem; bottom: 2rem; z-index: 3; color: #F5F5F3;
-}
-.tfg-cat-feature__num {
-	display: block;
-	font-family: var(--font-body); font-size: var(--fs-eyebrow);
-	letter-spacing: var(--tk-eyebrow); text-transform: uppercase;
-	color: var(--silver-bright); margin-bottom: 0.5rem;
-}
-.tfg-cat-feature__name {
-	display: block;
-	font-family: var(--font-display); font-weight: 500;
-	font-size: clamp(2.25rem, 3.5vw, 3.5rem); line-height: 1;
-}
-.tfg-cat-feature__count {
-	display: block; margin-top: 0.6rem;
-	font-size: var(--fs-eyebrow); letter-spacing: var(--tk-eyebrow);
-	text-transform: uppercase; color: var(--silver-bright);
-}
-
-@media (max-width: 900px) {
-	.tfg-cats-feature { grid-template-columns: 1fr; }
-	.tfg-cat-feature { min-height: 380px; }
-	.tfg-cats-side { grid-template-rows: none; grid-template-columns: 1fr; }
-}
-
-/* Category side card — extended with numbered label */
-.tfg-cat-card__num {
-	display: block;
-	font-family: var(--font-body); font-size: var(--fs-eyebrow);
-	letter-spacing: var(--tk-eyebrow); text-transform: uppercase;
-	color: var(--silver-bright); margin-bottom: 0.35rem;
-}
-
 /* =========================================================================
-   HOME — Full-bleed cinematic image band (statement section)
-   Image fills the viewport; content overlays bottom-left.
-   ========================================================================= */
-.tfg-fullbleed-band {
-	position: relative;
-	min-height: clamp(480px, 80vh, 760px);
-	display: flex;
-	align-items: flex-end;
-	overflow: hidden;
-	background: #0A0A0B;
-}
-.tfg-fullbleed-band__media {
-	position: absolute; inset: 0; z-index: 0;
-}
-.tfg-fullbleed-band__media img {
-	width: 100%; height: 100%; object-fit: cover; object-position: center;
-}
-.tfg-fullbleed-band__overlay {
-	position: absolute; inset: 0; z-index: 1;
-	background:
-		linear-gradient(180deg, rgba(7,7,8,0.5) 0%, rgba(7,7,8,0.1) 30%, rgba(7,7,8,0.85) 100%),
-		linear-gradient(90deg, rgba(7,7,8,0.6) 0%, transparent 55%);
-}
-.tfg-fullbleed-band__inner {
-	position: relative; z-index: 2;
-	width: 100%;
-	max-width: 760px;
-	margin-inline: auto;
-	padding: 0 var(--gutter) clamp(4rem, 9vh, 7rem);
-}
-.tfg-fullbleed-band__eyebrow { color: rgba(255,255,255,0.7); margin-bottom: 1.5rem; }
-.tfg-fullbleed-band__title {
-	font-family: var(--font-display);
-	font-size: clamp(2.2rem, 5vw, 4.5rem);
-	line-height: 1;
-	letter-spacing: -0.02em;
-	color: #FFFFFF;
-	font-weight: 500;
-	max-width: 16ch;
-}
-.tfg-fullbleed-band__sub {
-	margin-top: 1.5rem;
-	font-size: clamp(1rem, 1.2vw, 1.15rem);
-	color: rgba(245,245,243,0.85);
-	max-width: 56ch;
-	line-height: 1.55;
-}
-.tfg-fullbleed-band__actions {
-	margin-top: 2.5rem;
-	display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: center;
-}
-.tfg-fullbleed-band__actions .tfg-btn--primary {
-	background: #fff; color: #0A0A0B; border-color: #fff;
-}
-@media (max-width: 760px) {
-	.tfg-fullbleed-band { min-height: 520px; }
-	.tfg-fullbleed-band__inner { max-width: 100%; padding-bottom: 3rem; }
-}
-
-/* =========================================================================
-   HOME — Section 3: Trending carousel
+   HOME — Scene 3: TRENDING (full-bleed horizontal rail)
    ========================================================================= */
 .tfg-trending { position: relative; }
 .tfg-trending__rail {
@@ -190,381 +61,210 @@
 	scrollbar-width: thin;
 	scrollbar-color: var(--silver) transparent;
 	-webkit-overflow-scrolling: touch;
+	width: 100vw;
+	margin-left: calc(50% - 50vw);
+	padding-inline: var(--gutter);
 }
 .tfg-trending__rail::-webkit-scrollbar { height: 4px; }
 .tfg-trending__rail::-webkit-scrollbar-track { background: var(--line-soft); }
 .tfg-trending__rail::-webkit-scrollbar-thumb { background: var(--silver); }
-.tfg-trending__item {
-	flex: 0 0 clamp(300px, 32vw, 420px);
-	scroll-snap-align: start;
-}
+.tfg-trending__item { flex: 0 0 clamp(300px, 32vw, 440px); scroll-snap-align: start; }
 
 /* =========================================================================
-   HOME — Section 4: Brand statement (editorial split 7/5)
+   HOME — Scene 5: THE NUMBERS (count-up, grid)
    ========================================================================= */
-.tfg-split {
-	display: grid;
-	grid-template-columns: 7fr 5fr;
-	gap: clamp(2rem, 5vw, 5rem);
-	align-items: center;
-}
-.tfg-split--reverse { grid-template-columns: 5fr 7fr; }
-.tfg-split__media { aspect-ratio: 4 / 5; overflow: hidden; background: var(--surface-2); }
-.tfg-split__media img { width: 100%; height: 100%; object-fit: cover; }
-.tfg-split__content { max-width: 48ch; }
-.tfg-split__content .eyebrow { margin-bottom: 1.5rem; }
-.tfg-split__content h2 { margin-bottom: 1.5rem; }
-.tfg-split__content p { color: var(--ink-soft); }
-.tfg-split__actions { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
-@media (max-width: 860px) {
-	.tfg-split, .tfg-split--reverse { grid-template-columns: 1fr; }
-	.tfg-split__media { aspect-ratio: 16 / 10; order: -1; }
-}
+.tfg-stats { grid-template-columns: repeat(7, 1fr); }
+@media (max-width: 1080px) { .tfg-stats { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 560px) { .tfg-stats { grid-template-columns: repeat(2, 1fr); } }
 
 /* =========================================================================
-   HOME — Section 7: Why Sell (magazine spread, 3-col with center image)
+   HOME — Scene 6: WHY SELL (editorial split, pinned)
    ========================================================================= */
-.tfg-magazine {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	gap: clamp(2rem, 4vw, 4rem);
-	align-items: start;
-	position: relative;
-}
-.tfg-magazine__col { padding-top: 2rem; }
-.tfg-magazine__col:nth-child(2) { padding-top: 0; }
-.tfg-magazine__num {
-	font-family: var(--font-body);
-	font-size: var(--fs-eyebrow);
-	letter-spacing: var(--tk-eyebrow);
-	color: var(--silver-bright);
-	margin-bottom: 1rem;
-}
-.tfg-magazine__col h3 {
-	font-family: var(--font-display);
-	font-size: var(--fs-h3);
-	margin-bottom: 1rem;
-}
-.tfg-magazine__col p { color: var(--ink-soft); font-size: var(--fs-small); }
-.tfg-magazine__feature {
-	grid-column: 2;
-	grid-row: 1;
-	height: 100%;
-	aspect-ratio: 3 / 4;
-	overflow: hidden;
-	background: var(--surface-2);
-}
-.tfg-magazine__feature img { width: 100%; height: 100%; object-fit: cover; }
-@media (max-width: 860px) {
-	.tfg-magazine { grid-template-columns: 1fr; }
-	.tfg-magazine__feature { grid-column: 1; grid-row: 1; aspect-ratio: 16 / 10; }
-	.tfg-magazine__col { grid-column: 1; padding-top: 1rem; }
-}
-
-/* =========================================================================
-   HOME — Section 8: Team teaser (diptych)
-   ========================================================================= */
-.tfg-diptych {
+.tfg-why {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: clamp(1rem, 2vw, 1.5rem);
-	position: relative;
+	gap: clamp(3rem, 6vw, 6rem);
+	align-items: center;
 }
-.tfg-diptych__panel {
-	aspect-ratio: 3 / 4;
-	overflow: hidden;
-	background: var(--surface-2);
-	position: relative;
+.tfg-why__reasons { display: flex; flex-direction: column; gap: clamp(2.5rem, 5vh, 4rem); }
+.tfg-why__reason { display: grid; grid-template-columns: auto 1fr; gap: 1.5rem; align-items: start; }
+.tfg-why__num {
+	font-family: var(--font-display); font-size: clamp(2.5rem, 4vw, 3.5rem);
+	font-weight: 500; line-height: 1;
+	background: var(--chrome); -webkit-background-clip: text; background-clip: text;
+	color: transparent; -webkit-text-fill-color: transparent; min-width: 2.5ch;
 }
+.tfg-why__body h3 { font-family: var(--font-display); font-size: clamp(1.5rem, 2vw, 2rem); margin-bottom: 0.75rem; }
+.tfg-why__body p { color: var(--ink-soft); font-size: 0.95rem; }
+.tfg-why__media { aspect-ratio: 3/4; overflow: hidden; background: var(--surface-2); position: sticky; top: calc(var(--header-h) + 2rem); }
+.tfg-why__media img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 860px) {
+	.tfg-why { grid-template-columns: 1fr; }
+	.tfg-why__media { aspect-ratio: 16/10; position: static; order: -1; }
+}
+
+/* =========================================================================
+   HOME — Scene 7: THE TEAM (diptych)
+   ========================================================================= */
+.tfg-diptych { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1rem, 2vw, 1.5rem); position: relative; }
+.tfg-diptych__panel { aspect-ratio: 3/4; overflow: hidden; background: var(--surface-2); position: relative; }
 .tfg-diptych__panel img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease); }
 .tfg-diptych__panel:hover img { transform: scale(1.04); }
-.tfg-diptych__caption {
-	position: absolute;
-	inset: auto 0 0 0;
-	padding: 1.5rem;
-	background: linear-gradient(180deg, transparent, rgba(10,10,11,0.8));
-	color: #F5F5F3;
-}
-:root[data-theme="light"] .tfg-diptych__caption { background: linear-gradient(180deg, transparent, rgba(255,255,255,0.85)); color: var(--ink); }
-.tfg-diptych__caption .eyebrow { color: var(--silver-bright); margin-bottom: 0.5rem; }
+.tfg-diptych__caption { position: absolute; inset: auto 0 0 0; padding: 1.5rem; background: linear-gradient(180deg, transparent, rgba(7,7,8,0.85)); color: #F5F5F3; }
+.tfg-diptych__caption .eyebrow { color: rgba(255,255,255,0.7); margin-bottom: 0.5rem; }
 .tfg-diptych__caption h3 { font-family: var(--font-display); font-size: 1.5rem; }
 @media (max-width: 640px) { .tfg-diptych { grid-template-columns: 1fr; } }
 
 /* =========================================================================
-   INNER — Generic page header (slim hero)
+   HOME — Scene 8: ASSOCIATIONS grid
    ========================================================================= */
-.tfg-page-header {
-	padding: calc(var(--header-h) + clamp(3rem, 8vh, 6rem)) 0 clamp(2rem, 5vh, 4rem);
-	border-bottom: 1px solid var(--line);
-}
-.tfg-page-header__eyebrow { margin-bottom: 1.25rem; }
-.tfg-page-header h1 { font-size: var(--fs-h1); max-width: 16ch; }
-.tfg-page-header__sub { margin-top: 1.5rem; color: var(--ink-soft); max-width: 50ch; font-size: var(--fs-body-l); }
+.tfg-trust__grid { grid-template-columns: repeat(8, 1fr); }
+@media (max-width: 1080px) { .tfg-trust__grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 560px) { .tfg-trust__grid { grid-template-columns: repeat(2, 1fr); } }
 
 /* =========================================================================
-   ABOUT — Three-act editorial (stacked panels, alternating)
+   INNER — Slim hero
    ========================================================================= */
-.tfg-act {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: clamp(2rem, 5vw, 5rem);
-	align-items: center;
-	padding-block: var(--pad-y-sm);
-}
+.tfg-page-header { padding: clamp(3rem, 8vh, 6rem) 0 clamp(2rem, 5vh, 4rem); border-bottom: 1px solid var(--line); }
+.tfg-page-header__eyebrow { margin-bottom: 1.25rem; }
+.tfg-page-header h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); max-width: 16ch; }
+.tfg-page-header__sub { margin-top: 1.5rem; color: var(--ink-soft); max-width: 50ch; font-size: 1.1rem; }
+
+/* =========================================================================
+   ABOUT — Three-act editorial
+   ========================================================================= */
+.tfg-act { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 5rem); align-items: center; padding-block: var(--pad-y-sm); }
 .tfg-act:nth-child(even) .tfg-act__media { order: 2; }
-.tfg-act__media { aspect-ratio: 4 / 5; overflow: hidden; background: var(--surface-2); }
+.tfg-act__media { aspect-ratio: 4/5; overflow: hidden; background: var(--surface-2); }
 .tfg-act__media img { width: 100%; height: 100%; object-fit: cover; }
 .tfg-act__content { max-width: 48ch; }
 .tfg-act__content .eyebrow { margin-bottom: 1.25rem; }
-.tfg-act__content h3 { font-size: var(--fs-h2); margin-bottom: 1.5rem; }
+.tfg-act__content h3 { font-size: clamp(1.75rem, 3vw, 2.5rem); margin-bottom: 1.5rem; }
 .tfg-act__content p { color: var(--ink-soft); margin-bottom: 1rem; }
 @media (max-width: 860px) {
 	.tfg-act { grid-template-columns: 1fr; }
 	.tfg-act:nth-child(even) .tfg-act__media { order: 0; }
-	.tfg-act__media { aspect-ratio: 16 / 10; }
+	.tfg-act__media { aspect-ratio: 16/10; }
 }
 
-/* =========================================================================
-   ABOUT — 3-column block (Real Estate Sales / Global Media / Intl Marketing)
-   ========================================================================= */
+/* 3-col capability block */
 .tfg-three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 3vw, 3rem); }
 @media (max-width: 860px) { .tfg-three-col { grid-template-columns: 1fr; } }
-.tfg-three-col__item h3 { font-family: var(--font-display); font-size: var(--fs-h3); margin-bottom: 1rem; }
-.tfg-three-col__item p { color: var(--ink-soft); font-size: var(--fs-small); }
+.tfg-three-col__item h3 { font-family: var(--font-display); font-size: 1.75rem; margin-bottom: 1rem; }
+.tfg-three-col__item p { color: var(--ink-soft); font-size: 0.92rem; }
 
 /* =========================================================================
    CONTACT — Two-column (offices + form)
    ========================================================================= */
-.tfg-contact {
-	display: grid;
-	grid-template-columns: 5fr 7fr;
-	gap: clamp(2rem, 5vw, 5rem);
-	align-items: start;
-}
+.tfg-contact { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
 @media (max-width: 960px) { .tfg-contact { grid-template-columns: 1fr; } }
 .tfg-contact__offices { position: sticky; top: calc(var(--header-h) + 2rem); }
 @media (max-width: 960px) { .tfg-contact__offices { position: static; } }
 
 /* =========================================================================
-   SELL WITH US — Stacked reason panels (8 reasons, 2-col with numerals)
+   SELL — Reasons grid
    ========================================================================= */
 .tfg-reasons { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 4vw, 4rem) clamp(2rem, 4vw, 4rem); }
 @media (max-width: 760px) { .tfg-reasons { grid-template-columns: 1fr; } }
 .tfg-reason { display: grid; grid-template-columns: auto 1fr; gap: 1.5rem; align-items: start; padding-bottom: 2rem; border-bottom: 1px solid var(--line-soft); }
-.tfg-reason__num {
-	font-family: var(--font-display);
-	font-size: clamp(2rem, 3vw, 2.5rem);
-	font-weight: 500;
-	color: transparent;
-	background: var(--chrome);
-	-webkit-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-	line-height: 1;
-	min-width: 2.5ch;
-}
-.tfg-reason__body h3 { font-family: var(--font-display); font-size: var(--fs-h3); margin-bottom: 0.75rem; }
-.tfg-reason__body p { color: var(--ink-soft); font-size: var(--fs-small); }
+.tfg-reason__num { font-family: var(--font-display); font-size: clamp(2rem, 3vw, 2.5rem); font-weight: 500; background: var(--chrome); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; min-width: 2.5ch; }
+.tfg-reason__body h3 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.75rem; }
+.tfg-reason__body p { color: var(--ink-soft); font-size: 0.9rem; }
 
 /* =========================================================================
-   AIRCRAFT — Stacked full-bleed panels
+   AIRCRAFT — Stacked panels
    ========================================================================= */
 .tfg-panel-stack { display: flex; flex-direction: column; gap: clamp(1rem, 2vw, 2rem); }
-.tfg-panel {
-	position: relative;
-	aspect-ratio: 21 / 9;
-	overflow: hidden;
-	background: var(--surface-2);
-	display: flex;
-	align-items: flex-end;
-}
+.tfg-panel { position: relative; aspect-ratio: 21/9; overflow: hidden; background: var(--surface-2); display: flex; align-items: flex-end; }
 .tfg-panel__img { position: absolute; inset: 0; }
 .tfg-panel__img img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--dur-slow) var(--ease); }
 .tfg-panel:hover .tfg-panel__img img { transform: scale(1.04); }
-.tfg-panel__img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(10,10,11,0.85)); }
+.tfg-panel__img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(7,7,8,0.88)); }
 .tfg-panel__content { position: relative; z-index: 2; padding: clamp(1.5rem, 4vw, 3rem); color: #F5F5F3; }
-:root[data-theme="light"] .tfg-panel__content { color: var(--ink); }
-:root[data-theme="light"] .tfg-panel__img::after { background: linear-gradient(180deg, transparent 40%, rgba(255,255,255,0.85)); }
-.tfg-panel__content .eyebrow { color: var(--silver-bright); margin-bottom: 0.75rem; }
-.tfg-panel__content h3 { font-family: var(--font-display); font-size: var(--fs-h2); color: inherit; }
-.tfg-panel__content p { margin-top: 0.75rem; max-width: 40ch; color: var(--silver-bright); }
-@media (max-width: 760px) { .tfg-panel { aspect-ratio: 4 / 5; } }
+.tfg-panel__content .eyebrow { color: rgba(255,255,255,0.7); margin-bottom: 0.75rem; }
+.tfg-panel__content h3 { font-family: var(--font-display); font-size: clamp(1.75rem, 3vw, 2.5rem); color: inherit; }
+.tfg-panel__content p { margin-top: 0.75rem; max-width: 40ch; color: rgba(255,255,255,0.75); }
+@media (max-width: 760px) { .tfg-panel { aspect-ratio: 4/5; } }
 
 /* =========================================================================
-   ARMORED — Diptych + capability list
+   ARMORED — Capability list
    ========================================================================= */
 .tfg-cap-list { border-top: 1px solid var(--line); }
-.tfg-cap-row {
-	display: grid;
-	grid-template-columns: auto 1fr auto;
-	gap: 1.5rem;
-	align-items: baseline;
-	padding: 1.25rem 0;
-	border-bottom: 1px solid var(--line-soft);
-}
-.tfg-cap-row__num { font-size: var(--fs-eyebrow); letter-spacing: var(--tk-eyebrow); color: var(--silver-bright); font-variant-numeric: tabular-nums; }
-.tfg-cap-row__title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 500; }
-.tfg-cap-row__desc { font-size: var(--fs-small); color: var(--ink-soft); max-width: 32ch; text-align: right; }
-@media (max-width: 640px) {
-	.tfg-cap-row { grid-template-columns: auto 1fr; }
-	.tfg-cap-row__desc { grid-column: 2; text-align: left; }
-}
+.tfg-cap-row { display: grid; grid-template-columns: auto 1fr auto; gap: 1.5rem; align-items: baseline; padding: 1.25rem 0; border-bottom: 1px solid var(--line-soft); }
+.tfg-cap-row__num { font-size: 0.66rem; letter-spacing: 0.16em; color: var(--silver-bright); font-variant-numeric: tabular-nums; }
+.tfg-cap-row__title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 500; }
+.tfg-cap-row__desc { font-size: 0.85rem; color: var(--ink-soft); max-width: 32ch; text-align: right; }
+@media (max-width: 640px) { .tfg-cap-row { grid-template-columns: auto 1fr; } .tfg-cap-row__desc { grid-column: 2; text-align: left; } }
 
 /* =========================================================================
-   LISTING ARCHIVE (WooCommerce)
+   WOOCOMMERCE ARCHIVE (listings)
    ========================================================================= */
-.tfg-archive { padding: calc(var(--header-h) + clamp(2rem, 5vh, 4rem)) 0 var(--pad-y); }
+.tfg-archive { padding: clamp(2rem, 5vh, 4rem) 0 var(--pad-y); }
 .tfg-archive__header { margin-bottom: clamp(2rem, 4vh, 3rem); }
-.tfg-archive__header h1 { font-size: var(--fs-h1); }
+.tfg-archive__header h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); }
 .tfg-archive__header p { margin-top: 1rem; color: var(--ink-soft); max-width: 50ch; }
-.tfg-toolbar {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 1rem;
-	padding: 1.25rem 0;
-	border-top: 1px solid var(--line);
-	border-bottom: 1px solid var(--line);
-	margin-bottom: clamp(2rem, 4vh, 3rem);
-	flex-wrap: wrap;
-}
-.tfg-toolbar__count { font-size: var(--fs-eyebrow); letter-spacing: var(--tk-eyebrow); text-transform: uppercase; color: var(--ink-mute); }
+.tfg-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.25rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: clamp(2rem, 4vh, 3rem); flex-wrap: wrap; }
+.tfg-toolbar__count { font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-mute); }
 .tfg-toolbar__count .num { color: var(--ink); font-weight: 600; }
-.tfg-toolbar__sort { font-size: var(--fs-small); }
-.tfg-toolbar__sort .orderby {
-	background: transparent;
-	border: 0;
-	border-bottom: 1px solid var(--silver);
-	color: var(--ink);
-	font-family: var(--font-body);
-	font-size: var(--fs-small);
-	padding: 0.4rem 1.5rem 0.4rem 0;
-	cursor: pointer;
-	-webkit-appearance: none;
-	appearance: none;
-	outline: none;
-}
-.tfg-toolbar__sort .orderby option { background: var(--bg); }
-
-/* Product grid */
-.tfg-products-grid {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: clamp(1.5rem, 3vw, 2.5rem);
-}
+.tfg-toolbar__sort .orderby { background: transparent; border: 0; border-bottom: 1px solid var(--silver); color: var(--ink); font-family: var(--font-body); font-size: 0.85rem; padding: 0.4rem 1.5rem 0.4rem 0; cursor: pointer; -webkit-appearance: none; appearance: none; outline: none; }
+.tfg-products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 3vw, 2.5rem); }
 @media (max-width: 1080px) { .tfg-products-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .tfg-products-grid { grid-template-columns: 1fr; } }
-
-/* Pagination */
 .tfg-pagination { display: flex; justify-content: center; gap: 0.5rem; margin-top: clamp(3rem, 6vh, 5rem); }
-.tfg-pagination a, .tfg-pagination span {
-	width: 40px; height: 40px;
-	display: inline-flex; align-items: center; justify-content: center;
-	border: 1px solid var(--line);
-	font-size: var(--fs-small);
-	color: var(--ink-soft);
-	transition: all var(--dur-fast) var(--ease);
-}
+.tfg-pagination a, .tfg-pagination span { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--line); font-size: 0.85rem; color: var(--ink-soft); transition: all var(--dur-fast) var(--ease); }
 .tfg-pagination a:hover { border-color: var(--silver); color: var(--ink); }
 .tfg-pagination .current { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
 /* =========================================================================
    SINGLE PRODUCT (listing detail)
    ========================================================================= */
-.tfg-single { padding: calc(var(--header-h) + 2rem) 0 var(--pad-y); }
+.tfg-single { padding: clamp(2rem, 4vh, 3rem) 0 var(--pad-y); }
 .tfg-single__top { margin-bottom: 2rem; }
 .tfg-single__top .eyebrow { margin-bottom: 0.75rem; }
-.tfg-single__title { font-size: var(--fs-h1); line-height: 1.05; }
+.tfg-single__title { font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.05; }
 .tfg-single__price { font-family: var(--font-body); font-size: 1.5rem; font-weight: 600; color: var(--ink); margin-top: 0.75rem; font-variant-numeric: tabular-nums; }
-
-.tfg-single__grid {
-	display: grid;
-	grid-template-columns: 1.4fr 1fr;
-	gap: clamp(2rem, 4vw, 4rem);
-	align-items: start;
-}
+.tfg-single__grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(2rem, 4vw, 4rem); align-items: start; }
 @media (max-width: 960px) { .tfg-single__grid { grid-template-columns: 1fr; } }
-
 .tfg-single__summary { position: sticky; top: calc(var(--header-h) + 2rem); }
 @media (max-width: 960px) { .tfg-single__summary { position: static; } }
-.tfg-single__summary h2 { font-size: var(--fs-h3); margin-bottom: 1rem; }
+.tfg-single__summary h2 { font-size: 1.75rem; margin-bottom: 1rem; }
 .tfg-single__summary p { color: var(--ink-soft); }
-.tfg-single__specs {
-	margin: 2rem 0;
-	border-top: 1px solid var(--line);
-}
-.tfg-single__spec {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 1rem;
-	padding: 1rem 0;
-	border-bottom: 1px solid var(--line-soft);
-	font-size: var(--fs-small);
-}
-.tfg-single__spec dt { color: var(--ink-mute); letter-spacing: var(--tk-meta); text-transform: uppercase; font-size: var(--fs-eyebrow); }
+.tfg-single__specs { margin: 2rem 0; border-top: 1px solid var(--line); }
+.tfg-single__spec { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line-soft); font-size: 0.85rem; }
+.tfg-single__spec dt { color: var(--ink-mute); letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.66rem; }
 .tfg-single__spec dd { margin: 0; color: var(--ink); font-weight: 500; }
-
 .tfg-single-enquiry { display: flex; flex-direction: column; gap: 0.75rem; margin: 2rem 0; }
 
-/* Broker card on single product */
-.tfg-broker-card { display: flex; gap: 1.25rem; align-items: center; padding: 1.5rem; border: 1px solid var(--line); background: var(--surface); margin-top: 2rem; }
-.tfg-broker-card__img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; }
-.tfg-broker-card__name { font-family: var(--font-display); font-size: 1.25rem; }
-.tfg-broker-card__role { font-size: var(--fs-eyebrow); letter-spacing: var(--tk-eyebrow); text-transform: uppercase; color: var(--silver-bright); margin-top: 0.25rem; }
-
 /* =========================================================================
-   LEGAL (Privacy / Terms) — long-form narrow column
+   LEGAL (Privacy / Terms)
    ========================================================================= */
-.tfg-legal { padding: calc(var(--header-h) + clamp(2rem, 5vh, 4rem)) 0 var(--pad-y); }
+.tfg-legal { padding: clamp(2rem, 5vh, 4rem) 0 var(--pad-y); }
 .tfg-legal__layout { display: grid; grid-template-columns: 220px 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
 @media (max-width: 860px) { .tfg-legal__layout { grid-template-columns: 1fr; } }
 .tfg-legal__toc { position: sticky; top: calc(var(--header-h) + 2rem); }
 @media (max-width: 860px) { .tfg-legal__toc { position: static; display: none; } }
-.tfg-legal__toc h4 { font-size: var(--fs-eyebrow); letter-spacing: var(--tk-eyebrow); text-transform: uppercase; color: var(--silver-bright); margin-bottom: 1rem; }
+.tfg-legal__toc h4 { font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--silver-bright); margin-bottom: 1rem; }
 .tfg-legal__toc ul { display: flex; flex-direction: column; gap: 0.5rem; }
-.tfg-legal__toc a { font-size: var(--fs-small); color: var(--ink-soft); }
+.tfg-legal__toc a { font-size: 0.85rem; color: var(--ink-soft); }
 .tfg-legal__toc a:hover { color: var(--ink); }
 .tfg-legal__content { max-width: 720px; }
-.tfg-legal__content h2 { font-size: var(--fs-h3); margin: 2.5rem 0 1rem; }
+.tfg-legal__content h2 { font-size: 1.75rem; margin: 2.5rem 0 1rem; }
 .tfg-legal__content h2:first-child { margin-top: 0; }
-.tfg-legal__content h3 { font-size: var(--fs-h4); font-family: var(--font-body); font-weight: 600; margin: 2rem 0 0.75rem; }
+.tfg-legal__content h3 { font-size: 1.25rem; font-family: var(--font-body); font-weight: 600; margin: 2rem 0 0.75rem; }
 .tfg-legal__content p { color: var(--ink-soft); margin-bottom: 1rem; }
-.tfg-legal__content ul { margin: 0 0 1rem 1.25rem; }
-.tfg-legal__content li { list-style: disc; margin-bottom: 0.5rem; color: var(--ink-soft); }
 
 /* =========================================================================
    404
    ========================================================================= */
-.tfg-404 {
-	min-height: 100vh; min-height: 100svh;
-	display: flex; align-items: center; justify-content: center;
-	text-align: center;
-	position: relative;
-	overflow: hidden;
-}
+.tfg-404 { min-height: 100vh; min-height: 100svh; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden; }
 .tfg-404__bg { position: absolute; inset: 0; z-index: 0; }
 .tfg-404__bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.35; }
 .tfg-404__bg::after { content: ""; position: absolute; inset: 0; background: var(--overlay); }
 .tfg-404__inner { position: relative; z-index: 2; padding: 2rem; }
-.tfg-404__inner h1 { font-size: var(--fs-h1); font-style: italic; max-width: 16ch; margin: 0 auto 1.5rem; }
+.tfg-404__inner h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); font-style: italic; max-width: 16ch; margin: 0 auto 1.5rem; }
 .tfg-404__inner p { color: var(--silver-bright); margin-bottom: 2rem; }
 
 /* =========================================================================
-   SECTION BANDS — alternating dark/light surfaces
+   RESPONSIVE HEADER
    ========================================================================= */
-/* Section bands — alternating for visual rhythm.
-   .band--dark   = black-on-black (obsidian, the dramatic sections)
-   .band--light  = white-on-black (raised platinum/graphite surface) */
-.band--dark { background: #0A0A0B; }
-.band--light { background: var(--surface); }
-.band--surface { background: var(--surface); }
-.band--surface-2 { background: var(--surface-2); }
-.band--border-top { border-top: 1px solid var(--line); }
-.band--border-bottom { border-bottom: 1px solid var(--line); }
-
-/* =========================================================================
-   RESPONSIVE HEADER ADJUSTMENTS
-   ========================================================================= */
-@media (max-width: 1080px) {
-	:root { --header-h: 64px; }
-}
+@media (max-width: 1080px) { :root { --header-h: 64px; } }

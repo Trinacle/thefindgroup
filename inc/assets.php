@@ -41,15 +41,17 @@ function tfg_styles() {
 	wp_enqueue_style( 'tfg-tokens', TFG_URI . '/assets/css/tokens.css', array(), $ver );
 	// 2. Base / typography.
 	wp_enqueue_style( 'tfg-base', TFG_URI . '/assets/css/base.css', array( 'tfg-tokens' ), $ver );
-	// 3. Components.
-	wp_enqueue_style( 'tfg-components', TFG_URI . '/assets/css/components.css', array( 'tfg-base' ), $ver );
-	// 4. Layouts / pages.
+	// 3. Cinema system (scroll-snap scenes, reveals, count-up, parallax).
+	wp_enqueue_style( 'tfg-cinema', TFG_URI . '/assets/css/cinema.css', array( 'tfg-base' ), $ver );
+	// 4. Components.
+	wp_enqueue_style( 'tfg-components', TFG_URI . '/assets/css/components.css', array( 'tfg-cinema' ), $ver );
+	// 5. Layouts / pages.
 	wp_enqueue_style( 'tfg-layout', TFG_URI . '/assets/css/layout.css', array( 'tfg-components' ), $ver );
-	// 5. WooCommerce overrides.
+	// 6. WooCommerce overrides.
 	if ( class_exists( 'WooCommerce' ) ) {
 		wp_enqueue_style( 'tfg-woo', TFG_URI . '/assets/css/woocommerce.css', array( 'tfg-layout' ), $ver );
 	}
-	// 6. Forminator overrides (loaded late so they win specificity).
+	// 7. Forminator overrides (loaded late so they win specificity).
 	if ( class_exists( 'Forminator_API' ) ) {
 		wp_enqueue_style( 'tfg-forminator', TFG_URI . '/assets/css/forminator.css', array(), $ver );
 	}
@@ -62,7 +64,9 @@ add_action( 'wp_enqueue_scripts', 'tfg_styles' );
 function tfg_scripts() {
 	$ver = TFG_VERSION;
 
-	// Main theme script (vanilla JS — GSAP/Lenis removed by request).
+	// Cinema engine: reveals, count-up, parallax, scroll progress.
+	wp_enqueue_script( 'tfg-cinema', TFG_URI . '/assets/js/cinema.js', array(), $ver, true );
+	// Main theme script (UI: toggle, nav, search, newsletter, form, chat).
 	wp_enqueue_script( 'tfg-main', TFG_URI . '/assets/js/main.js', array(), $ver, true );
 
 	// Pass server-side data to JS.
