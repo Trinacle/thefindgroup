@@ -14,18 +14,21 @@ $hero  = $cats[0];
 $sides = array_slice( $cats, 1 );
 ?>
 
-<section class="section band--dark band--border-bottom" id="categories">
-	<div class="container">
+<section class="band--dark band--border-bottom" id="categories" style="padding-bottom:0;">
 
-		<div class="section__head" style="display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;">
+	<!-- Section header (contained) -->
+	<div class="container section" style="padding-bottom:clamp(2rem,4vh,3rem);">
+		<div class="section__head" style="display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;margin-bottom:0;">
 			<div>
 				<span class="eyebrow"><?php esc_html_e( '01 — The Collection', 'tfg' ); ?></span>
 				<h2><?php esc_html_e( 'Four disciplines. One standard.', 'tfg' ); ?></h2>
 			</div>
 			<p class="lead" style="max-width:42ch;margin:0;"><?php esc_html_e( 'From superyachts to private aviation, each division is led by specialists with decades of experience and a network that spans the globe.', 'tfg' ); ?></p>
 		</div>
+	</div>
 
-		<div class="tfg-cats-feature">
+	<!-- Full-bleed bento (breaks out of container via CSS) -->
+	<div class="tfg-cats-feature">
 			<!-- Hero card (Yachts) -->
 			<a href="<?php echo esc_url( $hero['link'] ); ?>" class="tfg-cat-feature">
 				<img src="<?php echo esc_url( $hero['img'] ); ?>" alt="<?php echo esc_attr( $hero['name'] ); ?>" class="tfg-cat-feature__img" loading="lazy">
@@ -59,5 +62,4 @@ $sides = array_slice( $cats, 1 );
 			</div>
 		</div>
 
-	</div>
 </section>

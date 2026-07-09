@@ -6,18 +6,57 @@
    ========================================================================= */
 
 /* =========================================================================
-   HOME — Section 2: Featured Categories (editorial feature + side grid)
+   HOME — Section 2: Featured Categories — full-bleed edge-to-edge bento.
+   Breaks out of the container to fill the viewport width.
    ========================================================================= */
 .tfg-cats-feature {
 	display: grid;
-	grid-template-columns: 1.4fr 1fr;
-	gap: clamp(0.75rem, 1.5vw, 1.25rem);
+	grid-template-columns: 1.5fr 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
+	gap: 2px;
+	background: rgba(255,255,255,0.06);
+	width: 100vw;
+	margin-left: calc(50% - 50vw);
+	height: clamp(480px, 72vh, 720px);
 }
+/* Hero card spans 2 rows in the first column */
+.tfg-cat-feature {
+	grid-row: 1 / span 2;
+	grid-column: 1;
+}
+/* Side cards fill columns 2 & 3 */
 .tfg-cats-side {
-	display: grid;
-	grid-template-rows: repeat(3, 1fr);
-	gap: clamp(0.75rem, 1.5vw, 1.25rem);
+	display: contents;
 }
+.tfg-cats-side .tfg-cat-card:nth-child(1) { grid-row: 1; grid-column: 2; }
+.tfg-cats-side .tfg-cat-card:nth-child(2) { grid-row: 1; grid-column: 3; }
+.tfg-cats-side .tfg-cat-card:nth-child(3) { grid-row: 2; grid-column: 2 / span 2; }
+
+@media (max-width: 900px) {
+	.tfg-cats-feature {
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: 1fr 1fr 1fr;
+		height: auto;
+	}
+	.tfg-cat-feature { grid-row: 1; grid-column: 1 / span 2; min-height: 340px; }
+	.tfg-cats-side .tfg-cat-card:nth-child(1) { grid-row: 2; grid-column: 1; min-height: 240px; }
+	.tfg-cats-side .tfg-cat-card:nth-child(2) { grid-row: 2; grid-column: 2; min-height: 240px; }
+	.tfg-cats-side .tfg-cat-card:nth-child(3) { grid-row: 3; grid-column: 1 / span 2; min-height: 240px; }
+}
+@media (max-width: 560px) {
+	.tfg-cats-feature { grid-template-columns: 1fr; }
+	.tfg-cat-feature,
+	.tfg-cats-side .tfg-cat-card:nth-child(1),
+	.tfg-cats-side .tfg-cat-card:nth-child(2),
+	.tfg-cats-side .tfg-cat-card:nth-child(3) {
+		grid-column: 1; min-height: 260px;
+	}
+	.tfg-cat-feature { grid-row: 1; }
+	.tfg-cats-side .tfg-cat-card:nth-child(1) { grid-row: 2; }
+	.tfg-cats-side .tfg-cat-card:nth-child(2) { grid-row: 3; }
+	.tfg-cats-side .tfg-cat-card:nth-child(3) { grid-row: 4; }
+}
+
 .tfg-cat-feature {
 	position: relative;
 	display: block;
@@ -76,6 +115,66 @@
 	font-family: var(--font-body); font-size: var(--fs-eyebrow);
 	letter-spacing: var(--tk-eyebrow); text-transform: uppercase;
 	color: var(--silver-bright); margin-bottom: 0.35rem;
+}
+
+/* =========================================================================
+   HOME — Full-bleed cinematic image band (statement section)
+   Image fills the viewport; content overlays bottom-left.
+   ========================================================================= */
+.tfg-fullbleed-band {
+	position: relative;
+	min-height: clamp(480px, 80vh, 760px);
+	display: flex;
+	align-items: flex-end;
+	overflow: hidden;
+	background: #0A0A0B;
+}
+.tfg-fullbleed-band__media {
+	position: absolute; inset: 0; z-index: 0;
+}
+.tfg-fullbleed-band__media img {
+	width: 100%; height: 100%; object-fit: cover; object-position: center;
+}
+.tfg-fullbleed-band__overlay {
+	position: absolute; inset: 0; z-index: 1;
+	background:
+		linear-gradient(180deg, rgba(7,7,8,0.5) 0%, rgba(7,7,8,0.1) 30%, rgba(7,7,8,0.85) 100%),
+		linear-gradient(90deg, rgba(7,7,8,0.6) 0%, transparent 55%);
+}
+.tfg-fullbleed-band__inner {
+	position: relative; z-index: 2;
+	width: 100%;
+	max-width: 760px;
+	margin-inline: auto;
+	padding: 0 var(--gutter) clamp(4rem, 9vh, 7rem);
+}
+.tfg-fullbleed-band__eyebrow { color: rgba(255,255,255,0.7); margin-bottom: 1.5rem; }
+.tfg-fullbleed-band__title {
+	font-family: var(--font-display);
+	font-size: clamp(2.2rem, 5vw, 4.5rem);
+	line-height: 1;
+	letter-spacing: -0.02em;
+	color: #FFFFFF;
+	font-weight: 500;
+	max-width: 16ch;
+}
+.tfg-fullbleed-band__sub {
+	margin-top: 1.5rem;
+	font-size: clamp(1rem, 1.2vw, 1.15rem);
+	color: rgba(245,245,243,0.85);
+	max-width: 56ch;
+	line-height: 1.55;
+}
+.tfg-fullbleed-band__actions {
+	margin-top: 2.5rem;
+	display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: center;
+}
+.tfg-fullbleed-band__actions .tfg-btn--primary {
+	background: #fff; color: #0A0A0B; border-color: #fff;
+}
+@media (max-width: 760px) {
+	.tfg-fullbleed-band { min-height: 520px; }
+	.tfg-fullbleed-band__inner { max-width: 100%; padding-bottom: 3rem; }
 }
 
 /* =========================================================================
