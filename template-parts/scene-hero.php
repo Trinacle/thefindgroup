@@ -7,14 +7,11 @@
  */
 ?>
 <div class="tfg-hero">
-	<div class="tfg-hero__media" data-parallax="0.2">
-		<?php
-		if ( has_post_thumbnail( get_the_ID() ) ) {
-			echo get_the_post_thumbnail( get_the_ID(), 'tfg-hero', array( 'loading' => 'eager', 'fetchpriority' => 'high' ) );
-		} else {
-			echo '<img src="' . esc_url( TFG_URI . '/assets/img/hero-yacht-bahamas.jpg' ) . '" alt="' . esc_attr__( 'Luxury yacht at dusk', 'tfg' ) . '" loading="eager" fetchpriority="high">';
-		}
-		?>
+	<div class="tfg-hero__media" data-parallax="0.15">
+		<video autoplay muted loop playsinline poster="<?php echo esc_url( TFG_URI . '/assets/img/hero-yacht-bahamas.jpg' ); ?>">
+			<source src="<?php echo esc_url( TFG_URI . '/assets/video/hero-loop.mp4' ); ?>" type="video/mp4">
+			<img src="<?php echo esc_url( TFG_URI . '/assets/img/hero-yacht-bahamas.jpg' ); ?>" alt="<?php esc_attr_e( 'Luxury yacht', 'tfg' ); ?>">
+		</video>
 	</div>
 	<div class="tfg-hero__inner">
 		<div class="eyebrow tfg-hero__eyebrow" data-reveal><?php esc_html_e( 'Est. 1985 — Luxury Asset Brokerage', 'tfg' ); ?></div>

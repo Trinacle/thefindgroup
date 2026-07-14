@@ -84,17 +84,92 @@ function tfg_scripts() {
 add_action( 'wp_enqueue_scripts', 'tfg_scripts' );
 
 /**
- * Dequeue plugins' default styles that conflict with our restyle.
- * Forminator CSS is heavy; we keep its grid but override visuals.
+ * Strip page-builder assets that fight our bespoke theme.
+ * Elementor + Ultimate Elementor (UAEL) + Astra enqueue ~26 CSS/JS files
+ * AFTER our stylesheet, overriding fonts, colors, and spacing.
+ * This is the #1 cause of "the design looks wrong."
+ * Per the wordpress-theme-development skill: killlist on every page load.
  */
-function tfg_dequeue_styles() {
-	// Elementor front-end is not used; remove if a previous install left it active.
-	if ( class_exists( '\Elementor\Plugin' ) ) {
-		wp_dequeue_style( 'elementor-frontend' );
-		wp_dequeue_style( 'elementor-post-1' );
+function tfg_dequeue_builder_assets() {
+	// CSS killlist — page builder + framework styles we don't use.
+	$css_kill = array(
+		// Elementor core.
+		'elementor-frontend',
+		'elementor-post-1',
+		'elementor-post',
+		'elementor-pro',
+		'elementor-icons',
+		'elementor-common',
+		// Ultimate Addons for Elementor (UAEL).
+		'uael-frontend',
+		'uael-woocommerce',
+		// Swiper / Slick (Elementor carousels — we have our own).
+		'swiper',
+		'e-swiper',
+		'slick',
+		// Astra theme + addon (if parent theme is active).
+		'astra-theme-css',
+		'astra-addon-css',
+		'astra-woocommerce-css',
+		// Font Awesome (Elementor's version — we use inline SVG).
+		'elementor-icons-fa-solid',
+		'elementor-icons-fa-brands',
+		'elementor-icons-fa-regular',
+		'font-awesome',
+		'font-awesome-5-all',
+		'font-awesome-4-shim',
+		// Slider Revolution.
+		'rs-plugin-settings',
+		'rs-icon-set-fa-icon-merged',
+		// Other bloat.
+		'google-fonts-1',
+		'elementor-globe',
+		'elementor-post-pro-css',
+	);
+	foreach ( $css_kill as $handle ) {
+		wp_dequeue_style( $handle );
+		wp_deregister_style( $handle );
+	}
+
+	// JS killlist — page builder scripts.
+	$js_kill = array(
+		'elementor-frontend',
+		'elementor-frontend-modules',
+		'elementor-frontend-script',
+		'elementor-webpack-runtime',
+		'uael-frontend',
+		'uael-woocommerce',
+		'uael-particles',
+		'swiper',
+		'e-swiper',
+		'slick',
+		'particles',
+		'elementor-pro-frontend',
+		'rs-plugin-main',
+	);
+	foreach ( $js_kill as $handle ) {
+		wp_dequeue_script( $handle );
+		wp_deregister_script( $handle );
 	}
 }
-add_action( 'wp_enqueue_scripts', 'tfg_dequeue_styles', 100 );
+add_action( 'wp_enqueue_scripts', 'tfg_dequeue_builder_assets', 100 );
+
+/**
+ * Also strip Elementor's body classes and meta tags for a clean DOM.
+ */
+function tfg_clean_body_classes( $classes ) {
+	$remove = array( 'elementor-default', 'elementor-kit', 'elementor-page', 'elementor-page-' );
+	foreach ( $classes as $i => $c ) {
+		foreach ( $remove as $r ) {
+			if ( strpos( $c, $r ) !== false ) {
+				unset( $classes[ $i ] );
+				break;
+			}
+		}
+	}
+	return $classes;
+}
+add_filter( 'body_class', 'tfg_clean_body_classes', 20 );
 
 /**
  * Inline critical-path CSS to prevent dark/light flash on first paint.

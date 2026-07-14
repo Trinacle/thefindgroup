@@ -445,26 +445,27 @@ body { padding-top: var(--header-h); }
 /* =========================================================================
    9. ASSOCIATIONS / TRUST
    ========================================================================= */
-.tfg-trust { padding: clamp(3rem, 6vh, 4.5rem) 0; }
+/* ASSOCIATIONS — always white background section, logos shown in original colors */
+.tfg-trust { padding: clamp(3rem, 6vh, 4.5rem) 0; background: #FFFFFF; }
+:root[data-theme="dark"] .tfg-trust { background: #FFFFFF; }
 .tfg-trust__grid { display: grid; gap: clamp(1rem, 2vw, 1.5rem); }
 .tfg-trust__item {
 	display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.65rem;
 	padding: clamp(1rem, 2vw, 1.5rem) 0.5rem; text-align: center;
-	border: 1px solid var(--line-soft); background: var(--surface);
+	border: 1px solid rgba(0,0,0,0.08); background: #FAFAFA;
 	transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
 	min-height: 130px;
 }
-.tfg-trust__item:hover { border-color: var(--silver); background: var(--surface-2); }
+.tfg-trust__item:hover { border-color: rgba(0,0,0,0.2); background: #F0F0F2; }
+/* Logos shown in original colors — no filter, no invert */
 .tfg-trust__logo {
-	max-width: 120px; max-height: 44px; width: auto; height: 44px;
-	object-fit: contain; filter: grayscale(1) brightness(1.4) invert(1);
-	opacity: 0.85; transition: opacity var(--dur) var(--ease), filter var(--dur) var(--ease);
+	max-width: 130px; max-height: 48px; width: auto; height: 48px;
+	object-fit: contain;
+	opacity: 0.9; transition: opacity var(--dur) var(--ease);
 }
-:root[data-theme="light"] .tfg-trust__logo { filter: grayscale(1) brightness(0.3); }
-.tfg-trust__item:hover .tfg-trust__logo { opacity: 1; filter: grayscale(0) brightness(1.4) invert(1); }
-:root[data-theme="light"] .tfg-trust__item:hover .tfg-trust__logo { filter: grayscale(0) brightness(0.5); }
-.tfg-trust__name { font-family: var(--font-body); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.7; }
-.tfg-trust__desc { font-size: 0.68rem; opacity: 0.5; font-family: var(--font-body); }
+.tfg-trust__item:hover .tfg-trust__logo { opacity: 1; }
+.tfg-trust__name { font-family: var(--font-body); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(0,0,0,0.5); }
+.tfg-trust__desc { font-size: 0.68rem; color: rgba(0,0,0,0.4); font-family: var(--font-body); }
 
 /* =========================================================================
    10. BRAND LOGO STRIP

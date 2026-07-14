@@ -16,9 +16,21 @@ if ( ! $leaders ) return;
 		</div>
 
 		<div class="tfg-diptych" data-reveal-stagger>
-			<?php foreach ( $leaders as $m ) : $role = get_post_meta( $m->ID, '_tfg_role', true ); ?>
+			<?php foreach ( $leaders as $m ) :
+				$role = get_post_meta( $m->ID, '_tfg_role', true );
+				// Map known leaders to their headshot assets (until WP media library is wired).
+				$photo = '';
+				$slug  = sanitize_title( $m->post_title );
+				if ( file_exists( TFG_DIR . '/assets/team/' . $slug . '.jpg' ) ) {
+					$photo = TFG_URI . '/assets/team/' . $slug . '.jpg';
+				}
+			?>
 				<div class="tfg-diptych__panel">
-					<?php if ( has_post_thumbnail( $m->ID ) ) echo get_the_post_thumbnail( $m->ID, 'tfg-card', array( 'alt' => esc_attr( $m->post_title ) ) ); ?>
+					<?php if ( $photo ) : ?>
+						<img src="<?php echo esc_url( $photo ); ?>" alt="<?php echo esc_attr( $m->post_title ); ?>" loading="lazy">
+					<?php elseif ( has_post_thumbnail( $m->ID ) ) : ?>
+						<?php echo get_the_post_thumbnail( $m->ID, 'tfg-card', array( 'alt' => esc_attr( $m->post_title ) ) ); ?>
+					<?php endif; ?>
 					<div class="tfg-diptych__caption">
 						<span class="eyebrow eyebrow--bare"><?php echo esc_html( $role ); ?></span>
 						<h3><?php echo esc_html( $m->post_title ); ?></h3>
