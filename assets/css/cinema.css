@@ -20,10 +20,11 @@
 	display: flex;
 	align-items: center;
 }
-/* The hero gets a full 100vh lock */
+/* The hero gets a full viewport lock — subtract header height so it
+   fills EXACTLY the visible screen (body has padding-top: var(--header-h)). */
 .cinema-scene--hero {
-	min-height: 100vh;
-	min-height: 100svh;
+	min-height: calc(100vh - var(--header-h));
+	min-height: calc(100svh - var(--header-h));
 }
 /* Shorter scenes for non-hero bands */
 .cinema-scene--sm {

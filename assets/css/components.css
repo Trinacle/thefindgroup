@@ -277,7 +277,8 @@ body { padding-top: var(--header-h); }
    ========================================================================= */
 .tfg-hero {
 	position: relative;
-	min-height: 100vh; min-height: 100svh;
+	min-height: calc(100vh - var(--header-h));
+	min-height: calc(100svh - var(--header-h));
 	display: flex; align-items: flex-end;
 	overflow: hidden;
 	background: #0A0A0B;
