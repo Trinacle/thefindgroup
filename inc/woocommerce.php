@@ -267,17 +267,20 @@ function tfg_asset_categories() {
  */
 function tfg_ensure_product_categories() {
 	if ( get_option( 'tfg_woo_cats_seeded' ) ) return;
-	if ( ! function_exists( 'wc_create_product_category' ) ) return;
-	$cats = array_keys( tfg_asset_categories() );
-	$labels = tfg_asset_categories();
-	foreach ( $cats as $slug ) {
+	// Bail only if the product_cat taxonomy isn't registered (WooCommerce off).
+	if ( ! taxonomy_exists( 'product_cat' ) ) return;
+	$cats = tfg_asset_categories();
+	foreach ( array_keys( $cats ) as $slug ) {
 		if ( ! term_exists( $slug, 'product_cat' ) ) {
-			wp_insert_term( $labels[ $slug ]['name'], 'product_cat', array( 'slug' => $slug ) );
+			wp_insert_term( $cats[ $slug ]['name'], 'product_cat', array( 'slug' => $slug ) );
 		}
 	}
 	update_option( 'tfg_woo_cats_seeded', 1 );
 }
 add_action( 'after_switch_theme', 'tfg_ensure_product_categories' );
+// Also run on every admin load (cheap, guarded) so categories appear
+// without re-switching the theme — e.g. when WooCommerce activates late.
+add_action( 'admin_init', 'tfg_ensure_product_categories' );
 
 /**
  * Add a "broker" product data tab — links a listing to a team_member.
