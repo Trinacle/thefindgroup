@@ -1,11 +1,16 @@
 /* =========================================================================
-   TFG — WooCommerce Overrides
-   We ship our own product card markup (see inc/woocommerce.php) so this
-   file mainly handles archive chrome, single-product layout, notices,
-   and the broker tab.
+   TFG — WooCommerce (Luxury Brochure Edition)
+   Category archives open with a cinematic hero band; listings render as
+   large editorial catalog cards — hairline rules, serif names, price row.
    ========================================================================= */
 
-/* Hide WooCommerce's default notices banner chrome (keep messages) */
+/* ---- Category cinematic hero ---- */
+.tfg-cat-hero {
+	min-height: clamp(420px, 66vh, 680px);
+}
+.tfg-cat-hero .tfg-band__title { max-width: 20ch; }
+
+/* ---- Archive chrome ---- */
 .woocommerce-message,
 .woocommerce-info,
 .woocommerce-error {
@@ -15,99 +20,167 @@
 	padding: 1rem 1.5rem;
 	border-radius: 0;
 	margin: 0 0 1.5rem;
-	font-size: var(--fs-small);
+	font-size: 0.85rem;
 }
 .woocommerce-message::before,
 .woocommerce-info::before,
 .woocommerce-error::before { color: var(--silver-bright); }
 
-/* Product gallery (single) */
-.tfg-single-gallery .woocommerce-product-gallery {
-	position: relative;
-	margin-bottom: 1.5rem;
+/* Archive header */
+.tfg-archive__header .tfg-archive__title {
+	font-family: var(--font-display);
+	font-size: clamp(1.75rem, 3vw, 2.5rem);
+	font-weight: 500;
 }
-.tfg-single-gallery .woocommerce-product-gallery__image img {
-	width: 100%;
-	height: auto;
+
+/* Toolbar — slim hairline rule */
+.tfg-toolbar {
+	display: flex; align-items: center; justify-content: space-between;
+	gap: 1rem; padding: 1.1rem 0;
+	border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+	margin-bottom: clamp(2rem, 4vh, 3rem); flex-wrap: wrap;
+}
+.tfg-toolbar__count { font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-mute); }
+.tfg-toolbar__count .num { color: var(--ink); font-weight: 600; }
+.tfg-toolbar__sort .orderby {
+	background: transparent; border: 0; border-bottom: 1px solid var(--silver);
+	color: var(--ink); font-family: var(--font-body); font-size: 0.8rem;
+	padding: 0.4rem 1.5rem 0.4rem 0; cursor: pointer;
+	-webkit-appearance: none; appearance: none; outline: none;
+}
+.tfg-toolbar__sort .orderby option { background: var(--bg); color: var(--ink); }
+
+/* =========================================================================
+   BROCHURE LISTING GRID — 2-up large editorial cards (not dense e-comm grid)
+   ========================================================================= */
+.tfg-products-grid,
+.woocommerce ul.products {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 3vw, 3rem);
+	margin: 0; padding: 0; list-style: none;
+}
+@media (max-width: 680px) {
+	.tfg-products-grid,
+	.woocommerce ul.products { grid-template-columns: 1fr; }
+}
+
+/* =========================================================================
+   BROCHURE CARD — large image, serif name, hairline, price + enquire row
+   ========================================================================= */
+.tfg-listing-card {
+	display: flex; flex-direction: column;
+	background: transparent;               /* brochure: no box */
+	border: 0;                              /* no card border — hairline below */
+	color: var(--ink);
+}
+.tfg-listing-card__media {
+	position: relative;
+	aspect-ratio: 4 / 3;                    /* larger, magazine proportion */
+	overflow: hidden;
 	background: var(--surface-2);
 }
-.tfg-single-gallery .flex-control-thumbs {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.5rem;
-	margin-top: 0.5rem;
+.tfg-listing-card__img {
+	width: 100%; height: 100%; object-fit: cover;
+	transition: transform 900ms var(--ease), opacity var(--dur) var(--ease);
 }
-.tfg-single-gallery .flex-control-thumbs li {
-	flex: 0 0 calc(25% - 0.4rem);
-	list-style: none;
+.tfg-listing-card:hover .tfg-listing-card__img { transform: scale(1.05); }
+.tfg-listing-card__badge {
+	position: absolute; top: 1rem; left: 1rem;
+	background: rgba(10,10,11,0.85); color: #F5F5F3;
+	font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+	padding: 0.5em 1em; border: 1px solid rgba(255,255,255,0.25);
 }
+.tfg-listing-card__body {
+	padding: 1.5rem 0 0;
+	display: flex; flex-direction: column; flex: 1;
+}
+.tfg-listing-card__cat.eyebrow { font-size: 0.64rem; }
+.tfg-listing-card__cat.eyebrow::before { display: none; }
+.tfg-listing-card__title {
+	font-family: var(--font-display);
+	font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+	font-weight: 500; line-height: 1.15;
+	margin: 0.6rem 0 0.5rem;
+}
+.tfg-listing-card__specs {
+	font-size: 0.78rem; color: var(--ink-mute); letter-spacing: 0.05em;
+	margin-bottom: 1.25rem;
+}
+/* Price + enquire row pinned to bottom by flex:1 on body */
+.tfg-listing-card__price {
+	margin-top: auto; padding-top: 1.25rem;
+	border-top: 1px solid var(--line);     /* the hairline rule */
+	display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+	font-size: 1.25rem; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.tfg-listing-card__price .tfg-price__was { font-size: 0.85rem; }
+.tfg-listing-card__price .tfg-price__poa { font-size: 1.05rem; }
+.tfg-listing-card__cta {
+	font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
+	color: var(--ink-soft); white-space: nowrap;
+	display: inline-flex; align-items: center; gap: 0.5em;
+	transition: color var(--dur-fast) var(--ease);
+}
+.tfg-listing-card:hover .tfg-listing-card__cta { color: var(--ink); }
+.tfg-listing-card__cta span[aria-hidden] { transition: transform var(--dur) var(--ease); }
+.tfg-listing-card:hover .tfg-listing-card__cta span[aria-hidden] { transform: translateX(5px); }
+
+/* =========================================================================
+   SINGLE PRODUCT — editorial spread
+   ========================================================================= */
+.tfg-single .product .summary .product_title { display: none; }
+.tfg-single .product .summary .price { font-size: 1.5rem; color: var(--ink); margin-bottom: 1.5rem; }
+.tfg-single .product .summary .woocommerce-product-details__short-description { color: var(--ink-soft); margin-bottom: 1.5rem; }
+.tfg-single .product span.onsale,
+.tfg-single .woocommerce-product-rating { display: none; }
+.tfg-single .product_meta { display: none; }
+
+/* Gallery */
+.tfg-single-gallery .woocommerce-product-gallery { position: relative; margin-bottom: 1.5rem; }
+.tfg-single-gallery .woocommerce-product-gallery__image img { width: 100%; height: auto; background: var(--surface-2); }
+.tfg-single-gallery .flex-control-thumbs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+.tfg-single-gallery .flex-control-thumbs li { flex: 0 0 calc(25% - 0.4rem); list-style: none; }
 .tfg-single-gallery .flex-control-thumbs img {
-	width: 100%;
-	height: 80px;
-	object-fit: cover;
-	opacity: 0.5;
-	cursor: pointer;
+	width: 100%; height: 80px; object-fit: cover;
+	opacity: 0.45; cursor: pointer;
 	transition: opacity var(--dur-fast) var(--ease);
 }
 .tfg-single-gallery .flex-control-thumbs img:hover,
 .tfg-single-gallery .flex-control-thumbs img.flex-active { opacity: 1; }
 
-/* Single product summary */
-.tfg-single .product .summary { color: var(--ink); }
-.tfg-single .product .summary .product_title { display: none; } /* we render our own */
-.tfg-single .product .summary .price { font-size: 1.5rem; color: var(--ink); margin-bottom: 1.5rem; }
-.tfg-single .product .summary .woocommerce-product-details__short-description { color: var(--ink-soft); margin-bottom: 1.5rem; }
-
-/* Product tabs */
+/* Tabs */
 .tfg-single .woocommerce-tabs { margin-top: clamp(3rem, 6vh, 5rem); border-top: 1px solid var(--line); padding-top: clamp(2rem, 4vh, 3rem); }
-.tfg-single .woocommerce-tabs .tabs {
-	display: flex;
-	gap: 2rem;
-	margin: 0 0 2rem;
-	padding: 0;
-	border-bottom: 1px solid var(--line);
-}
+.tfg-single .woocommerce-tabs .tabs { display: flex; gap: 2rem; margin: 0 0 2rem; padding: 0; border-bottom: 1px solid var(--line); }
 .tfg-single .woocommerce-tabs .tabs li { list-style: none; }
 .tfg-single .woocommerce-tabs .tabs a {
-	font-size: var(--fs-eyebrow);
-	letter-spacing: var(--tk-eyebrow);
-	text-transform: uppercase;
-	color: var(--ink-mute);
-	padding: 0.75rem 0;
-	display: inline-block;
+	font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
+	color: var(--ink-mute); padding: 0.75rem 0; display: inline-block;
 	border-bottom: 1px solid transparent;
 	transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
 }
 .tfg-single .woocommerce-tabs .tabs li.active a { color: var(--ink); border-bottom-color: var(--silver-bright); }
-.tfg-single .woocommerce-tabs .woocommerce-Tabs-panel h2 { font-size: var(--fs-h3); margin-bottom: 1rem; }
+.tfg-single .woocommerce-tabs .woocommerce-Tabs-panel h2 { font-size: 1.5rem; margin-bottom: 1rem; }
 .tfg-single .woocommerce-tabs .woocommerce-Tabs-panel p { color: var(--ink-soft); }
 
-/* Hide the WooCommerce default "Related products" heading style */
-.tfg-single .related.products h2 { font-size: var(--fs-h3); margin-bottom: 1.5rem; }
+.tfg-single .related.products h2 { font-size: 1.5rem; margin-bottom: 1.5rem; }
 
-/* Sale flash */
-.tfg-single .product span.onsale { display: none; }
+/* Broker card */
+.tfg-broker-card { display: flex; gap: 1.25rem; align-items: center; padding: 1.5rem; border: 1px solid var(--line); background: var(--surface); margin-top: 2rem; }
+.tfg-broker-card__img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; }
+.tfg-broker-card__name { font-family: var(--font-display); font-size: 1.25rem; }
+.tfg-broker-card__role { font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--silver-bright); margin-top: 0.25rem; }
 
-/* Rating — hide (brokerage, not e-commerce) */
-.tfg-single .woocommerce-product-rating { display: none; }
+/* Pagination */
+.woocommerce nav.woocommerce-pagination ul { border: 0; }
+.woocommerce nav.woocommerce-pagination ul li { border: 0; }
 
-/* Cart / checkout redirects disabled; suppress residual cart UI */
-.woocommerce-cart, .woocommerce-checkout { display: none; }
-
-/* Product meta — hide (we use broker tab instead) */
-.tfg-single .product_meta { display: none; }
-
-/* Variation / grouped product tweaks */
-.tfg-single .variations { width: 100%; }
-.tfg-single .variations td { padding: 0.5rem 0; }
-.tfg-single .variations label { color: var(--ink-soft); font-size: var(--fs-small); }
-
-/* Empty cart / no-results message */
+/* Notices on archives */
 .woocommerce-info { color: var(--ink-soft); }
 
-/* Account / login pages — minimal restyle */
-.woocommerce-account .woocommerce { padding: calc(var(--header-h) + 2rem) var(--gutter) 4rem; max-width: var(--container); margin-inline: auto; }
+/* Account pages */
+.woocommerce-account .woocommerce { padding: clamp(2rem, 5vh, 4rem) var(--gutter) 4rem; max-width: var(--container); margin-inline: auto; }
 .woocommerce-account .woocommerce-MyAccount-navigation ul { display: flex; flex-direction: column; gap: 0.5rem; }
-.woocommerce-account .woocommerce-MyAccount-navigation a { color: var(--ink-soft); font-size: var(--fs-small); }
+.woocommerce-account .woocommerce-MyAccount-navigation a { color: var(--ink-soft); font-size: 0.85rem; }
 .woocommerce-account .woocommerce-MyAccount-navigation a:hover { color: var(--ink); }
 .woocommerce-account .woocommerce-MyAccount-navigation li.is-active a { color: var(--ink); border-left: 1px solid var(--silver-bright); padding-left: 0.75rem; }

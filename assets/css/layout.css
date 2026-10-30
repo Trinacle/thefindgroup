@@ -21,7 +21,9 @@
 	background: rgba(255,255,255,0.06);
 	width: 100vw;
 	margin-left: calc(50% - 50vw);
-	height: clamp(520px, 78vh, 800px);
+	/* Fill all remaining scene height below the section header */
+	flex: 1 1 auto;
+	min-height: 420px;
 }
 .tfg-cat-feature { grid-row: 1 / span 2; grid-column: 1; min-height: 100%; }
 .tfg-cats-side { display: contents; }

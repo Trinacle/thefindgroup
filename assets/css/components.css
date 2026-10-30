@@ -445,27 +445,33 @@ body { padding-top: var(--header-h); }
 
 /* =========================================================================
    9. ASSOCIATIONS / TRUST
+   Section background follows the theme (dark in dark mode, white in light).
+   Logo CARDS are always white so logos render in their ORIGINAL colors.
    ========================================================================= */
-/* ASSOCIATIONS — always white background section, logos shown in original colors */
-.tfg-trust { padding: clamp(3rem, 6vh, 4.5rem) 0; background: #FFFFFF; }
-:root[data-theme="dark"] .tfg-trust { background: #FFFFFF; }
+.tfg-trust { padding: clamp(3rem, 6vh, 4.5rem) 0; background: var(--bg); }
 .tfg-trust__grid { display: grid; gap: clamp(1rem, 2vw, 1.5rem); }
 .tfg-trust__item {
 	display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.65rem;
-	padding: clamp(1rem, 2vw, 1.5rem) 0.5rem; text-align: center;
-	border: 1px solid rgba(0,0,0,0.08); background: #FAFAFA;
-	transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
-	min-height: 130px;
+	padding: clamp(1.25rem, 2vw, 1.75rem) 0.5rem; text-align: center;
+	border: 1px solid rgba(0,0,0,0.1); background: #FFFFFF; /* always white card */
+	border-radius: var(--r-2);
+	transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+	min-height: 140px;
 }
-.tfg-trust__item:hover { border-color: rgba(0,0,0,0.2); background: #F0F0F2; }
+.tfg-trust__item:hover {
+	border-color: rgba(0,0,0,0.22);
+	transform: translateY(-3px);
+	box-shadow: 0 14px 34px rgba(0,0,0,0.18);
+}
 /* Logos shown in original colors — no filter, no invert */
 .tfg-trust__logo {
 	max-width: 130px; max-height: 48px; width: auto; height: 48px;
 	object-fit: contain;
-	opacity: 0.9; transition: opacity var(--dur) var(--ease);
+	opacity: 1; transition: opacity var(--dur) var(--ease);
 }
 .tfg-trust__item:hover .tfg-trust__logo { opacity: 1; }
-.tfg-trust__name { font-family: var(--font-body); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(0,0,0,0.5); }
+/* Headings adapt to section theme */
+.tfg-trust__name { font-family: var(--font-body); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(0,0,0,0.55); }
 .tfg-trust__desc { font-size: 0.68rem; color: rgba(0,0,0,0.4); font-family: var(--font-body); }
 
 /* =========================================================================

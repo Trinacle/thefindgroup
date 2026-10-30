@@ -6,25 +6,37 @@
 
 /* =========================================================================
    1. SCROLL-SNAP SCENES (the homepage spine)
+   Scenes are flex COLUMNS with stretch so children fill 100% of the scene.
+   Scene height = exactly one viewport minus the header.
    ========================================================================= */
 .tfg-cinema {
 	/* proximity = gentle snapping, respects user scroll (not mandatory) */
 	scroll-snap-type: y proximity;
 }
 .cinema-scene {
-	min-height: 90vh;
-	min-height: 90svh;
+	min-height: calc(100vh - var(--header-h));
+	min-height: calc(100svh - var(--header-h));
 	scroll-snap-align: start;
 	scroll-snap-stop: normal;
 	position: relative;
 	display: flex;
-	align-items: center;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: flex-start;
 }
-/* The hero gets a full viewport lock — subtract header height so it
-   fills EXACTLY the visible screen (body has padding-top: var(--header-h)). */
-.cinema-scene--hero {
-	min-height: calc(100vh - var(--header-h));
-	min-height: calc(100svh - var(--header-h));
+/* Every direct child fills the scene width */
+.cinema-scene > * { width: 100%; }
+/* Tall media children (hero / band) stretch to fill the scene height too */
+.cinema-scene > .tfg-hero,
+.cinema-scene > .tfg-band,
+.cinema-scene > .tfg-collection {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+}
+.cinema-scene > .tfg-hero,
+.cinema-scene > .tfg-band {
+	min-height: 0; /* let flex:1 from scene drive the height */
 }
 /* Shorter scenes for non-hero bands */
 .cinema-scene--sm {
@@ -220,4 +232,55 @@
 }
 @media (max-width: 760px) {
 	.tfg-scene-dots { display: none; }
+}
+
+/* =========================================================================
+   8. RESPONSIVE + SMOOTHNESS POLISH
+   ========================================================================= */
+
+/* Anchor jumps land below the solid header, not under it */
+section[id], [id="collection"], [id="trending"], [id="statement"],
+[id="numbers"], [id="why"], [id="team"], [id="associations"], [id="closing"] {
+	scroll-margin-top: var(--header-h);
+}
+
+/* Smooth anchor scrolling (native; respects reduced-motion below) */
+@media (prefers-reduced-motion: no-preference) {
+	html { scroll-behavior: smooth; }
+}
+
+/* Prevent horizontal rail from chaining scroll to the page */
+.tfg-trending__rail { overscroll-behavior-x: contain; }
+
+/* Kill tap highlight flash on mobile */
+a, button, .tfg-btn, .tfg-cat-card, .tfg-cat-feature, .tfg-listing-card {
+	-webkit-tap-highlight-color: transparent;
+}
+
+/* Full-bleed bento: avoid 100vw causing horizontal scroll from scrollbar */
+@supports (scrollbar-gutter: stable) {
+	.tfg-cats-feature, .tfg-trending__rail { scrollbar-gutter: stable; }
+}
+/* Fallback guard: never allow horizontal page scroll from bleed tricks */
+html, body { overflow-x: clip; }
+
+/* Mobile refinements */
+@media (max-width: 760px) {
+	.tfg-hero__inner { padding-bottom: 4.5rem; }
+	.tfg-hero__actions { gap: 1rem; }
+	.tfg-hero__actions .tfg-btn { width: 100%; justify-content: center; }
+	.tfg-hero__actions .tfg-text-link { width: 100%; justify-content: center; }
+	.tfg-band__inner { padding-bottom: 3.5rem; }
+	.tfg-band__title { font-size: clamp(2rem, 9vw, 3rem); }
+	.tfg-stat { padding: 1.5rem 1rem; }
+	.tfg-stat__num { font-size: clamp(2rem, 8vw, 3rem); }
+	.tfg-trust__item { min-height: 110px; padding: 1rem 0.5rem; }
+	.tfg-scene-dots { display: none; }
+	.tfg-scroll-progress { display: none; }
+}
+
+/* Tablet tweaks */
+@media (min-width: 761px) and (max-width: 1080px) {
+	.tfg-hero__title { font-size: clamp(3rem, 9vw, 7rem); }
+	.tfg-stat__num { font-size: clamp(2.25rem, 4vw, 3.5rem); }
 }
